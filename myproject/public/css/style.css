@@ -1,0 +1,204 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ================= TOP HEADER ================= */
+.top-header {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    background-color: #2b6d2c;
+    color: white;
+    padding: 12px 40px;
+    font-size: 14px;
+}
+
+.top-header nav {
+    margin-left: auto;
+    display: flex;
+    gap: 16px;
+}
+
+.top-header a {
+    color: white;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: 0.2s;
+}
+
+.top-header a:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.register-btn {
+    background: white;
+    color: #2b6d2c !important;
+    font-weight: 600;
+}
+
+/* ================= MAIN HEADER ================= */
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 40px;
+    background: #f9f9f9;
+}
+
+.logo {
+    color: #2b6d2c;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* ================= SEARCH + CART ================= */
+.search-cart {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+/* Search */
+.search-box {
+    position: relative;
+    width: 420px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 13px 100px 13px 20px;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.search-box input:focus {
+    border-color: #2b6d2c;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(43, 109, 44, 0.15);
+}
+
+.search-box button {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    background: #2b6d2c;
+    border: none;
+    color: white;
+    padding: 0 20px;
+    height: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.search-box button:hover {
+    background: #245b26;
+}
+
+/* Cart */
+.cart-btn {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    background: #2b6d2c;
+    color: white;
+    border-radius: 50%;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.cart-btn:hover {
+    background: #245b26;
+}
+
+.cart-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #e53935;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+/* ================= MENU ================= */
+.main-menu {
+    background: white;
+    padding: 12px 40px;
+    border-top: 1px solid #eee;
+}
+
+.main-menu a {
+    margin-right: 22px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.main-menu a:hover {
+    color: #2b6d2c;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+    background-color: #2b6d2c;
+    color: white;
+    margin-top: 40px;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding: 40px;
+}
+
+.footer-box h3,
+.footer-box h4 {
+    margin-bottom: 12px;
+}
+
+.footer-box p {
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.footer-box ul {
+    list-style: none;
+}
+
+.footer-box ul li {
+    margin-bottom: 8px;
+}
+
+.footer-box a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer-box a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    text-align: center;
+    background-color: #245a26;
+    padding: 12px;
+    font-size: 14px;
+}
