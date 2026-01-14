@@ -21,6 +21,7 @@
     margin-left: auto;
     display: flex;
     gap: 16px;
+    font-weight: bold;
 }
 
 .top-header a {
@@ -33,12 +34,6 @@
 
 .top-header a:hover {
     background: rgba(255, 255, 255, 0.15);
-}
-
-.register-btn {
-    background: white;
-    color: #2b6d2c !important;
-    font-weight: 600;
 }
 
 /* ================= MAIN HEADER ================= */
