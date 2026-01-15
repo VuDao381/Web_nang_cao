@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Books;
-use App\Models\Category;
-use App\Models\Publisher;
 
-class BooksController extends Controller
+class PublisherController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +12,6 @@ class BooksController extends Controller
     public function index()
     {
         //
-        $books = Books::all();
-        return view('books.index', compact('books'));
     }
 
     /**
@@ -25,10 +20,6 @@ class BooksController extends Controller
     public function create()
     {
         //
-        $categories = Category::all();
-        $publishers = Publisher::all();
-
-        return view('books.create', compact('categories', 'publishers'));
     }
 
     /**
@@ -37,8 +28,6 @@ class BooksController extends Controller
     public function store(Request $request)
     {
         //
-        Books::create($request->all());
-        return redirect()->route('books.index');
     }
 
     /**
