@@ -15,18 +15,17 @@ class BooksSeeder extends Seeder
     public function run(): void
     {
         //
-        $faker = Faker::create();
-        for ($i = 0; $i < 50; $i++) {
-            DB::table('books')->insert([
-                'title' => $faker->sentence(5),
-                'author' => $faker->name(5),
-                'description' => $faker->paragraph(),
-                'published_date' => $faker->date(),
-                'language' => $faker->randomElement(['English', 'Spanish', 'French', 'German', 'Chinese','Vietnamese']),
-                'pages' => $faker->numberBetween(100, 1000),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+        // $faker = Faker::create();
+        // for ($i = 0; $i < 50; $i++) {
+        //     DB::table('books')->insert([
+        //         'title' => $faker->sentence(5),
+        //         'author' => $faker->name(5),
+        //         'description' => $faker->paragraph(),
+        //         'published_date' => $faker->date(),
+        //         'pages' => $faker->numberBetween(100, 1000),
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ]);
+        // }
     }
 }

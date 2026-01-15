@@ -12,7 +12,11 @@ class Books extends Model
         'author',
         'description',
         'published_date',
-        'language',
         'pages',
+        'price',
+        'quantity',
+        'category_id',
+        'publisher_id',
+        'image'
     ];
 }
