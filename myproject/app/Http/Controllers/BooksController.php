@@ -37,8 +37,30 @@ class BooksController extends Controller
     public function store(Request $request)
     {
         //
-        Books::create($request->all());
-        return redirect()->route('books.index');
+        $request->validate([
+        'title' => 'required|string|max:255',
+        'author' => 'required|string|max:255',
+        'price' => 'required|numeric|min:0',
+        'quantity' => 'required|integer|min:0',
+        'published_date' => 'required|date',
+        'image' => 'required|url',
+        'category_id' => 'required|exists:categories,id',
+        'publisher_id' => 'required|exists:publishers,id',
+    ]);
+
+    Books::create($request->only([
+        'title',
+        'author',
+        'price',
+        'quantity',
+        'published_date',
+        'description',
+        'image',
+        'category_id',
+        'publisher_id',
+    ]));
+
+    return redirect()->route('books.index');
     }
 
     /**

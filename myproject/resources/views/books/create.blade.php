@@ -30,7 +30,7 @@
         </div>
         <div>
             <label for="image">Image URL:</label>
-            <input type="text" id="image_url" name="image_url" required>
+            <input type="text" id="image" name="image" required>    
         </div>
         <div>
             <label for="category">Category:</label>

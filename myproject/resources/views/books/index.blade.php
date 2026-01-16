@@ -12,8 +12,9 @@
     <div class="books-grid">
         @foreach($books as $book)
             <div class="book-card">
-                <img 
-                    src="{{ $book->image ?? 'https://via.placeholder.com/200x280?text=No+Image' }}" 
+
+                <img
+                    src="{{ !empty($book->image) ? $book->image : 'https://via.placeholder.com/200x280?text=No+Image' }}"
                     alt="{{ $book->title }}"
                 >
 
@@ -31,9 +32,9 @@
                     </p>
 
                     <p class="category">
-                        <b>Thể loại:</b> {{ $book->category->name ?? 'Chưa phân loại' }}
+                        <b>Thể loại:</b> {{ optional($book->category)->name ?? 'Chưa phân loại' }}
                         <br>
-                        <b>Nhà xuất bản:</b> {{ $book->publisher->name ?? 'N/A' }}
+                        <b>Nhà xuất bản:</b> {{ optional($book->publisher)->name ?? 'N/A' }}
                     </p>
 
                     <div class="actions">
