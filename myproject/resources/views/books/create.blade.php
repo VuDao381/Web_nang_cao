@@ -32,9 +32,14 @@
         </div>
 
         <div class="form-group">
-            <label>Ngày phát hành</label>
-            <input type="date" name="published_date">
-        </div>
+        <label>Năm phát hành</label>
+        <input
+            type="number"
+            name="published_year"
+            min="1000"
+            max="{{ date('Y') }}"
+        >
+    </div>
 
         <div class="form-group">
             <label>Mô tả</label>

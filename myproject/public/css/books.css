@@ -1,3 +1,61 @@
+/* ================= Pagination ================= */
+.pagination-wrapper {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: inline-flex;
+    gap: 4px;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+}
+
+.pagination .page-item {
+    list-style: none;
+}
+
+.pagination .page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px !important;
+    min-width: 28px;
+    height: 28px;
+    line-height: 1;
+    font-size: 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    color: #333;
+    text-decoration: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #f2f4f6;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #2b6d2c;
+    border-color: #2b6d2c;
+    color: #fff;
+    font-weight: 600;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #aaa;
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.pagination svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ================= Books Layout ================= */
 .books-container {
     padding: 30px 40px;
 }
@@ -15,7 +73,7 @@
 
 .btn-add {
     background: #2b6d2c;
-    color: white;
+    color: #fff;
     padding: 10px 18px;
     border-radius: 6px;
     text-decoration: none;
@@ -26,16 +84,16 @@
     background: #245b26;
 }
 
-/* ===== GRID ===== */
+/* ================= Grid ================= */
 .books-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     gap: 25px;
 }
 
-/* ===== CARD ===== */
+/* ================= Card ================= */
 .book-card {
-    background: white;
+    background: #fff;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 6px 18px rgba(0,0,0,0.08);
@@ -68,26 +126,18 @@
     color: #333;
 }
 
-.author {
+.book-info p {
     font-size: 13px;
-    color: #666;
+    color: #555;
+    margin-bottom: 6px;
 }
 
 .price {
-    font-size: 13px;
-    font-weight: bold;
+    font-weight: 700;
     color: #2b6d2c;
-    margin: 8px 0;
 }
 
-.meta,
-.category {
-    font-size: 13px;
-    color: #555;
-    margin-bottom: 8px;
-}
-
-/* ===== ACTION BUTTONS ===== */
+/* ================= Actions ================= */
 .actions {
     display: flex;
     gap: 10px;
@@ -99,7 +149,6 @@
     flex: 1;
 }
 
-/* Chuẩn hoá a & button */
 .actions a,
 .actions button {
     display: flex;
@@ -111,9 +160,8 @@
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    text-decoration: none; /* ❌ bỏ gạch chân */
+    text-decoration: none;
     border: none;
-    box-sizing: border-box;
 }
 
 /* Edit */
@@ -129,22 +177,21 @@
 /* Delete */
 .btn-delete {
     background: #dc2626;
-    color: white;
+    color: #fff;
 }
 
 .btn-delete:hover {
     background: #b91c1c;
 }
 
-
-/* ===== Edit Book Page ===== */
+/* ================= Edit / Create Page ================= */
 .edit-book-container {
     max-width: 800px;
     margin: 40px auto;
-    background: #ffffff;
+    background: #fff;
     padding: 30px 40px;
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
 .edit-book-container h2 {
@@ -153,14 +200,12 @@
     color: #2c3e50;
 }
 
-/* ===== Form ===== */
 .edit-book-form {
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
 
-/* ===== Form group ===== */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -179,7 +224,6 @@
     border-radius: 6px;
     border: 1px solid #ccc;
     font-size: 15px;
-    transition: border 0.2s, box-shadow 0.2s;
 }
 
 .form-group textarea {
@@ -187,23 +231,20 @@
     min-height: 90px;
 }
 
-/* ===== Focus ===== */
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
     outline: none;
     border-color: #3498db;
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.15);
+    box-shadow: 0 0 0 2px rgba(52,152,219,0.15);
 }
 
-/* ===== Row layout ===== */
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
 }
 
-/* ===== Buttons ===== */
 .form-actions {
     display: flex;
     justify-content: space-between;
@@ -214,16 +255,12 @@
     background: #3498db;
     color: #fff;
     padding: 10px 22px;
-    border: none;
     border-radius: 6px;
-    cursor: pointer;
     font-size: 15px;
-    transition: background 0.2s, transform 0.1s;
 }
 
 .btn-save:hover {
     background: #2980b9;
-    transform: translateY(-1px);
 }
 
 .btn-cancel {
@@ -232,15 +269,13 @@
     padding: 10px 22px;
     border-radius: 6px;
     text-decoration: none;
-    font-size: 15px;
-    transition: background 0.2s;
 }
 
 .btn-cancel:hover {
     background: #dcdde1;
 }
 
-/* ===== Responsive ===== */
+/* ================= Responsive ================= */
 @media (max-width: 600px) {
     .edit-book-container {
         padding: 20px;
