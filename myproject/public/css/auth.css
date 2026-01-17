@@ -1,0 +1,37 @@
+/* ===================== AUTH ===================== */
+.auth-container {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-form {
+    background: #fff;
+    padding: 30px 35px;
+    width: 360px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.auth-title {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2b6d2c;
+}
+
+.auth-submit {
+    width: 100%;
+    background: #2b6d2c;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.auth-submit:hover {
+    background: #245b26;
+}

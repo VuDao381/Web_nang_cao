@@ -2,20 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Các cột cho phép mass assignment
      */
     protected $fillable = [
         'name',
@@ -28,9 +24,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Các cột ẩn khi serialize
      */
     protected $hidden = [
         'password',
@@ -38,15 +32,56 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Cast dữ liệu
      */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
+            'is_active'         => 'boolean',
         ];
+    }
+
+    /* =========================================================
+     |  ROLE HELPERS
+     ========================================================= */
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
+    }
+
+    /* =========================================================
+     |  STATUS HELPERS
+     ========================================================= */
+
+    public function isActive(): bool
+    {
+        return (bool) $this->is_active;
+    }
+
+    /* =========================================================
+     |  QUERY SCOPES
+     ========================================================= */
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
+
+    public function scopeAdmin($query)
+    {
+        return $query->where('role', 'admin');
+    }
+
+    public function scopeUser($query)
+    {
+        return $query->where('role', 'user');
     }
 }
