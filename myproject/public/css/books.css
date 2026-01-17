@@ -26,23 +26,23 @@
     background: #245b26;
 }
 
-/* Grid */
+/* ===== GRID ===== */
 .books-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     gap: 25px;
 }
 
-/* Card */
+/* ===== CARD ===== */
 .book-card {
     background: white;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-
     display: flex;
     flex-direction: column;
     height: 100%;
+    transition: transform 0.2s ease;
 }
 
 .book-card:hover {
@@ -63,60 +63,195 @@
 }
 
 .book-info h3 {
-    font-size: 17px;
+    font-size: 16px;
     margin-bottom: 6px;
     color: #333;
 }
 
 .author {
-    font-size: 14px;
+    font-size: 13px;
     color: #666;
 }
 
 .price {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: bold;
     color: #2b6d2c;
     margin: 8px 0;
 }
 
-.meta, .category {
+.meta,
+.category {
     font-size: 13px;
     color: #555;
     margin-bottom: 8px;
 }
 
-/* Buttons */
+/* ===== ACTION BUTTONS ===== */
 .actions {
     display: flex;
     gap: 10px;
     margin-top: auto;
 }
 
-.actions a {
+.actions > a,
+.actions > form {
     flex: 1;
-    text-align: center;
-    padding: 6px 0;
-    border-radius: 5px;
+}
+
+/* Chuẩn hoá a & button */
+.actions a,
+.actions button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 8px 0;
+    border-radius: 6px;
     font-size: 13px;
-    text-decoration: none;
     font-weight: 600;
+    cursor: pointer;
+    text-decoration: none; /* ❌ bỏ gạch chân */
+    border: none;
+    box-sizing: border-box;
 }
 
-.btn-view {
-    background: #e9f5ea;
-    color: #2b6d2c;
-}
-
+/* Edit */
 .btn-edit {
     background: #fff3cd;
     color: #856404;
 }
 
-.btn-view:hover {
-    background: #d4edda;
-}
-
 .btn-edit:hover {
     background: #ffe69c;
+}
+
+/* Delete */
+.btn-delete {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #b91c1c;
+}
+
+
+/* ===== Edit Book Page ===== */
+.edit-book-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.edit-book-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2c3e50;
+}
+
+/* ===== Form ===== */
+.edit-book-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ===== Form group ===== */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #34495e;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+/* ===== Focus ===== */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.15);
+}
+
+/* ===== Row layout ===== */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* ===== Buttons ===== */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.btn-save {
+    background: #3498db;
+    color: #fff;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-save:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+.btn-cancel {
+    background: #ecf0f1;
+    color: #2c3e50;
+    padding: 10px 22px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 15px;
+    transition: background 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #dcdde1;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+    .edit-book-container {
+        padding: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
 }

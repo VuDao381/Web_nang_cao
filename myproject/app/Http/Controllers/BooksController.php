@@ -12,13 +12,24 @@ class BooksController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $books = Books::with(['category', 'publisher'])->get();
+        $keyword = $request->keyword;
+
+        $books = Books::with(['category', 'publisher'])
+            ->when($keyword, function ($query) use ($keyword) {
+                $query->where('title', 'like', "%$keyword%")
+                    ->orWhere('author', 'like', "%$keyword%")
+                    ->orWhereHas('category', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%$keyword%");
+                    })
+                    ->orWhereHas('publisher', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%$keyword%");
+                    });
+            })
+            ->get();
 
         return view('books.index', compact('books'));
-
     }
 
     /**
@@ -26,7 +37,6 @@ class BooksController extends Controller
      */
     public function create()
     {
-        //
         $categories = Category::all();
         $publishers = Publisher::all();
 
@@ -38,39 +48,33 @@ class BooksController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $request->validate([
-        'title' => 'required|string|max:255',
-        'author' => 'required|string|max:255',
-        'price' => 'required|numeric|min:0',
-        'quantity' => 'required|integer|min:0',
-        'published_date' => 'required|date',
-        'image' => 'required|url',
-        'category_id' => 'required|exists:categories,id',
-        'publisher_id' => 'required|exists:publishers,id',
-    ]);
+            'title'          => 'required|string|max:255',
+            'author'         => 'required|string|max:255',
+            'price'          => 'required|integer|min:0',
+            'quantity'       => 'required|integer|min:0',
+            'published_year' => 'nullable|digits:4|integer|min:1000|max:' . date('Y'),
+            'pages'          => 'nullable|integer|min:1',
+            'description'    => 'nullable|string',
+            'image'          => 'required|url',
+            'category_id'    => 'required|exists:categories,id',
+            'publisher_id'   => 'required|exists:publishers,id',
+        ]);
 
-    Books::create($request->only([
-        'title',
-        'author',
-        'price',
-        'quantity',
-        'published_date',
-        'description',
-        'image',
-        'category_id',
-        'publisher_id',
-    ]));
+        Books::create($request->only([
+            'title',
+            'author',
+            'price',
+            'quantity',
+            'published_year',
+            'pages',
+            'description',
+            'image',
+            'category_id',
+            'publisher_id',
+        ]));
 
-    return redirect()->route('books.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return redirect()->route('books.index');
     }
 
     /**
@@ -78,7 +82,11 @@ class BooksController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $books = Books::findOrFail($id);
+        $categories = Category::all();
+        $publishers = Publisher::all();
+
+        return view('books.edit', compact('books', 'categories', 'publishers'));
     }
 
     /**
@@ -86,7 +94,35 @@ class BooksController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title'          => 'required|string|max:255',
+            'author'         => 'required|string|max:255',
+            'price'          => 'required|integer|min:0',
+            'quantity'       => 'required|integer|min:0',
+            'published_year' => 'nullable|digits:4|integer|min:1000|max:' . date('Y'),
+            'pages'          => 'nullable|integer|min:1',
+            'description'    => 'nullable|string',
+            'image'          => 'required|url',
+            'category_id'    => 'required|exists:categories,id',
+            'publisher_id'   => 'required|exists:publishers,id',
+        ]);
+
+        $books = Books::findOrFail($id);
+
+        $books->update($request->only([
+            'title',
+            'author',
+            'price',
+            'quantity',
+            'published_year',
+            'pages',
+            'description',
+            'image',
+            'category_id',
+            'publisher_id',
+        ]));
+
+        return redirect()->route('books.index');
     }
 
     /**
@@ -94,6 +130,9 @@ class BooksController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $books = Books::findOrFail($id);
+        $books->delete();
+
+        return redirect()->route('books.index');
     }
 }

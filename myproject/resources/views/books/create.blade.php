@@ -1,54 +1,75 @@
 @extends('layouts.myapp')
-@section('title', 'Add New Book')
+
+@section('title', 'Thêm sách mới')
+
 @section('content')
-    <h2>Add New Book</h2>
-    <form action="{{ route('books.store') }}" method="POST">
+<div class="edit-book-container">
+    <h2>Thêm sách mới</h2>
+
+    <form action="{{ route('books.store') }}" method="POST" class="edit-book-form">
         @csrf
-        <div>
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required>
+
+        <div class="form-group">
+            <label>Tiêu đề</label>
+            <input type="text" name="title" required>
         </div>
-        <div>
-            <label for="author">Author:</label>
-            <input type="text" id="author" name="author" required>
+
+        <div class="form-group">
+            <label>Tác giả</label>
+            <input type="text" name="author" required>
         </div>
-        <div>
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price" required>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Giá</label>
+                <input type="number" name="price" required>
+            </div>
+
+            <div class="form-group">
+                <label>Số lượng</label>
+                <input type="number" name="quantity" required>
+            </div>
         </div>
-        <div>
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" required>
+
+        <div class="form-group">
+            <label>Ngày phát hành</label>
+            <input type="date" name="published_date">
         </div>
-        <div>
-            <label for="published_date">Published Date:</label>
-            <input type="date" id="published_date" name="published_date" required>
+
+        <div class="form-group">
+            <label>Mô tả</label>
+            <textarea name="description"></textarea>
         </div>
-        <div>
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" required></textarea>
+
+        <div class="form-group">
+            <label>Ảnh (URL)</label>
+            <input type="text" name="image">
         </div>
-        <div>
-            <label for="image">Image URL:</label>
-            <input type="text" id="image" name="image" required>    
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Thể loại</label>
+                <select name="category_id" required>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Nhà xuất bản</label>
+                <select name="publisher_id" required>
+                    @foreach($publishers as $publisher)
+                        <option value="{{ $publisher->id }}">{{ $publisher->name }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
-        <div>
-            <label for="category">Category:</label>
-            <select id="category" name="category_id" required>
-                @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
+
+        <div class="form-actions">
+            <a href="{{ route('books.index') }}" class="btn-cancel">Hủy</a>
+            <button type="submit" class="btn-save">Thêm sách</button>
         </div>
-        <div>
-            <label for="publisher">Publisher:</label>
-            <select id="publisher" name="publisher_id" required>
-                @foreach($publishers as $publisher)
-                    <option value="{{ $publisher->id }}">{{ $publisher->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div>
-        <button type="submit">Add Book</button>
     </form>
+</div>
 @endsection

@@ -15,8 +15,13 @@
         <h1 class="logo">📚 ABC Book</h1>
 
         <div class="search-cart">
-            <form class="search-box">
-                <input type="text" placeholder="Tìm kiếm sách..." aria-label="Search books">
+            <form class="search-box" action="{{ route('books.index') }}" method="GET">
+                <input
+                    type="text"
+                    name="keyword"
+                    placeholder="Tìm theo tên sách, tác giả, NXB, thể loại..."
+                    value="{{ request('keyword') }}"
+                >
                 <button type="submit">Search</button>
             </form>
 

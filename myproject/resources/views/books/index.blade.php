@@ -1,4 +1,4 @@
-@extends('layouts.myapp') 
+@extends('layouts.myapp')
 
 @section('title', 'Books List')
 
@@ -12,34 +12,41 @@
     <div class="books-grid">
         @foreach($books as $book)
             <div class="book-card">
-
                 <img
-                    src="{{ !empty($book->image) ? $book->image : 'https://via.placeholder.com/200x280?text=No+Image' }}"
+                    src="{{ $book->image ?: 'https://via.placeholder.com/200x280?text=No+Image' }}"
                     alt="{{ $book->title }}"
                 >
 
                 <div class="book-info">
                     <h3>{{ $book->title }}</h3>
-                    <p class="author"><b>Tác giả: {{ $book->author }}</b></p>
 
-                    <p class="price">
-                        Giá: {{ number_format($book->price, 0, ',', '.') }}đ
-                    </p>
+                    <p><b>Tác giả:</b> {{ $book->author }}</p>
 
-                    <p class="meta">
-                        <b>Ngày phát hành:</b> {{ $book->published_date ?? 'N/A' }} <br>
+                    <p><b>Giá:</b> {{ number_format($book->price, 0, ',', '.') }}đ</p>
+
+                    <p>
+                        <b>Năm phát hành:</b> {{ $book->published_year ?? 'N/A' }} <br>
+                        <b>Số trang:</b> {{ $book->pages ?? 'N/A' }} <br>
                         <b>Số lượng:</b> {{ $book->quantity }}
                     </p>
 
-                    <p class="category">
-                        <b>Thể loại:</b> {{ optional($book->category)->name ?? 'Chưa phân loại' }}
-                        <br>
-                        <b>Nhà xuất bản:</b> {{ optional($book->publisher)->name ?? 'N/A' }}
+                    <p>
+                        <b>Thể loại:</b> {{ optional($book->category)->name ?? 'Chưa phân loại' }} <br>
+                        <b>NXB:</b> {{ optional($book->publisher)->name ?? 'N/A' }}
                     </p>
 
                     <div class="actions">
-                        <a href="{{ route('books.show', $book->id) }}" class="btn-view">Xem</a>
                         <a href="{{ route('books.edit', $book->id) }}" class="btn-edit">Sửa</a>
+
+                        <form
+                            action="{{ route('books.destroy', $book->id) }}"
+                            method="POST"
+                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa sách này không?')"
+                        >
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-delete">Xóa</button>
+                        </form>
                     </div>
                 </div>
             </div>
