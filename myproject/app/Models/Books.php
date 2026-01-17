@@ -19,4 +19,13 @@ class Books extends Model
         'publisher_id',
         'image'
     ];
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function publisher()
+    {
+        return $this->belongsTo(Publisher::class);
+    }
 }

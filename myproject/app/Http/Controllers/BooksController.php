@@ -15,8 +15,10 @@ class BooksController extends Controller
     public function index()
     {
         //
-        $books = Books::all();
+        $books = Books::with(['category', 'publisher'])->get();
+
         return view('books.index', compact('books'));
+
     }
 
     /**
