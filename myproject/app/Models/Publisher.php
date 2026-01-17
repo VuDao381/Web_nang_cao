@@ -7,4 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Publisher extends Model
 {
     //
+    protected $fillable = [
+        'name',
+        'address',
+        'phone',
+        'email',
+    ];
+    public function books(){
+        return $this->hasMany(Books::class);
+    }
 }

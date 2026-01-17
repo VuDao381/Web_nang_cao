@@ -1,0 +1,167 @@
+/* ================= Category Layout ================= */
+.category-container {
+    padding: 30px 40px;
+}
+
+/* ================= Header ================= */
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.category-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2b6d2c;
+}
+
+/* Add button */
+.category-add-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 6px;
+    background: #2b6d2c;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.category-add-btn:hover {
+    background: #245b26;
+}
+
+/* ================= Table ================= */
+.category-table-wrapper {
+    background: #fff;
+    border-radius: 10px;
+    overflow-x: auto;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.category-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.category-table thead {
+    background: #f5f7f9;
+}
+
+.category-table th,
+.category-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.category-table th {
+    font-weight: 600;
+    color: #374151;
+}
+
+.category-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.category-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* ================= Status ================= */
+.category-status-active,
+.category-status-inactive {
+    font-weight: 600;
+}
+
+.category-status-active {
+    color: #16a34a;
+}
+
+.category-status-inactive {
+    color: #dc2626;
+}
+
+/* ================= Actions ================= */
+.category-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.category-actions a,
+.category-actions button {
+    padding: 6px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+
+/* Edit */
+.category-edit {
+    color: #856404;
+    background: #fff3cd;
+}
+
+.category-edit:hover {
+    background: #ffe69c;
+}
+
+/* Delete */
+.category-delete {
+    color: #fff;
+    background: #dc2626;
+}
+
+.category-delete:hover {
+    background: #b91c1c;
+}
+
+/* ================= Pagination ================= */
+.category-pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+/* ================= Checkbox fix ================= */
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    gap: 6px;
+}
+
+
+/* ================= Responsive ================= */
+@media (max-width: 768px) {
+    .category-container {
+        padding: 20px;
+    }
+
+    .category-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .category-table th,
+    .category-table td {
+        padding: 10px;
+        font-size: 13px;
+    }
+}

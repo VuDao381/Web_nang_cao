@@ -35,6 +35,8 @@
     <nav class="main-menu">
         <a href="{{ url('/') }}">Home</a>
         <a href="{{ route('books.index') }}">Books</a>
+        <a href="{{ route('categories.index') }}">Category</a>
+        <a href="{{ route('publishers.index') }}">Publisher</a>
     </nav>
 
 </header>
