@@ -16,23 +16,23 @@ class BooksController extends Controller
     {
         $keyword = $request->keyword;
 
-    $books = Books::with(['category', 'publisher'])
-        ->when($keyword, function ($query) use ($keyword) {
-            $query->where(function ($q) use ($keyword) {
-                $q->where('title', 'like', "%$keyword%")
-                  ->orWhere('author', 'like', "%$keyword%")
-                  ->orWhereHas('category', function ($q2) use ($keyword) {
-                      $q2->where('name', 'like', "%$keyword%");
-                  })
-                  ->orWhereHas('publisher', function ($q3) use ($keyword) {
-                      $q3->where('name', 'like', "%$keyword%");
-                  });
-            });
-        })
-        ->paginate(20) 
-        ->withQueryString();  
+        $books = Books::with(['category', 'publisher'])
+            ->when($keyword, function ($query) use ($keyword) {
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('title', 'like', "%$keyword%")
+                    ->orWhere('author', 'like', "%$keyword%")
+                    ->orWhereHas('category', function ($q2) use ($keyword) {
+                        $q2->where('name', 'like', "%$keyword%");
+                    })
+                    ->orWhereHas('publisher', function ($q3) use ($keyword) {
+                        $q3->where('name', 'like', "%$keyword%");
+                    });
+                });
+            })
+            ->paginate(20) 
+            ->withQueryString();  
 
-    return view('books.index', compact('books'));
+        return view('books.index', compact('books'));
     }
 
     /**
