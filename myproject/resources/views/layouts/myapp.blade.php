@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/books.css') }}">
     <link rel="stylesheet" href="{{ asset('css/category.css') }}">
     <link rel="stylesheet" href="{{ asset('css/publisher.css') }}">
-    <title>Document</title>
+    <title>ABC Book</title>
 </head>
 <body>
     @include('partials.header')

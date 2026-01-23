@@ -6,8 +6,19 @@
         <span>📍 123 Đường ABC, Hà Nội</span>
 
         <nav>
-            <a href="#">Đăng nhập</a>
-            <a href="#" class="register-btn">Đăng ký</a>
+            @auth
+                <span>👋 Xin chào, <strong>{{ Auth::user()->name }}</strong></span>
+
+                <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="logout-btn">
+                        Đăng xuất
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login') }}">Đăng nhập</a>
+                <a href="{{ route('register') }}" class="register-btn">Đăng ký</a>
+            @endauth
         </nav>
     </div>
 
@@ -37,6 +48,11 @@
         <a href="{{ route('books.index') }}">Books</a>
         <a href="{{ route('categories.index') }}">Category</a>
         <a href="{{ route('publishers.index') }}">Publisher</a>
+        <a href="{{ route('users.index') }}">User</a>
+
+        @auth
+            <a href="{{ route('dashboard') }}">Dashboard</a>
+        @endauth
     </nav>
 
 </header>

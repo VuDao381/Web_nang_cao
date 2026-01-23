@@ -1,13 +1,24 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BooksController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PublisherController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-Route::resource('books',BooksController::class);
-Route::resource('categories',CategoryController::class);
-Route::resource('publishers',PublisherController::class);
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
+require __DIR__.'/books.php';
+require __DIR__.'/category.php';
+require __DIR__.'/publisher.php';
+require __DIR__.'/user.php';
