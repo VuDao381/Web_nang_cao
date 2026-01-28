@@ -1,17 +1,19 @@
 @extends('dashboard')
 
-@section('title', 'Danh sách nhà xuất bản')
+@section('title', 'Quản lý Nhà xuất bản - ABC Book')
 
 @section('content')
     <div class="publisher-container">
 
-        <div class="publisher-header">
+        <div class="category-header">
             <h2>🏢 Danh sách nhà xuất bản</h2>
-
+            <a href="{{ route('publishers.create') }}" class="category-add-btn">
+                + Thêm nhà xuất bản
+            </a>
         </div>
 
-        <div class="publisher-table-wrapper">
-            <table class="publisher-table">
+        <div class="category-table-wrapper">
+            <table class="category-table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -31,8 +33,8 @@
                             <td>{{ $publisher->phone ?? '-' }}</td>
                             <td>{{ $publisher->email ?? '-' }}</td>
                             <td>
-                                <div class="publisher-actions">
-                                    <a href="{{ route('publishers.edit', $publisher->id) }}" class="publisher-edit">
+                                <div class="category-actions">
+                                    <a href="{{ route('publishers.edit', $publisher->id) }}" class="category-edit">
                                         Sửa
                                     </a>
 
@@ -40,7 +42,7 @@
                                         onsubmit="return confirm('Bạn có chắc chắn muốn xóa?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="publisher-delete">
+                                        <button type="submit" class="category-delete">
                                             Xóa
                                         </button>
                                     </form>

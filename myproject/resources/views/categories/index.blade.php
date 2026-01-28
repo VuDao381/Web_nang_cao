@@ -1,6 +1,6 @@
 @extends('dashboard')
 
-@section('title', 'Danh sách thể loại')
+@section('title', 'Quản lý thể loại - ABC Book')
 
 @section('content')
     <div class="category-container">
@@ -8,6 +8,10 @@
         {{-- Header --}}
         <div class="category-header">
             <h2>📂 Danh sách thể loại</h2>
+
+            <a href="{{ route('categories.create') }}" class="category-add-btn">
+                + Thêm thể loại
+            </a>
         </div>
 
         {{-- Thông báo --}}

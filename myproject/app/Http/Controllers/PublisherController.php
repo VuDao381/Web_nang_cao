@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PublisherController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Danh sách nhà xuất bản (Phân trang 10).
      */
     public function index()
     {
@@ -17,7 +18,7 @@ class PublisherController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Hiển thị form thêm mới.
      */
     public function create()
     {
@@ -25,86 +26,92 @@ class PublisherController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Lưu nhà xuất bản mới.
      */
     public function store(Request $request)
     {
         $request->validate(
             [
-                'name'    => 'required|string|max:255',
+                'name'    => 'required|string|max:255|unique:publishers,name',
                 'address' => 'nullable|string|max:255',
-                'phone'   => 'nullable|string|max:50',
+                'phone'   => 'nullable|string|max:20',
                 'email'   => 'nullable|email|max:255',
             ],
             [
                 'name.required' => 'Tên nhà xuất bản không được để trống',
+                'name.unique'   => 'Tên nhà xuất bản này đã tồn tại',
                 'email.email'   => 'Email không đúng định dạng',
             ]
         );
 
-        Publisher::create($request->only([
-            'name',
-            'address',
-            'phone',
-            'email',
-        ]));
+        try {
+            Publisher::create($request->all());
 
-        return redirect()
-            ->route('publishers.index')
-            ->with('success', 'Thêm nhà xuất bản thành công');
+            return redirect()
+                ->route('publishers.index')
+                ->with('success', 'Thêm nhà xuất bản thành công!');
+        } catch (\Exception $e) {
+            Log::error("Lỗi thêm NXB: " . $e->getMessage());
+            return back()->withInput()->with('error', 'Có lỗi xảy ra khi lưu dữ liệu.');
+        }
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Form chỉnh sửa (Sử dụng Route Model Binding).
      */
-    public function edit($id)
+    public function edit(Publisher $publisher)
     {
-        $publisher = Publisher::findOrFail($id);
         return view('publishers.edit', compact('publisher'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Cập nhật thông tin.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Publisher $publisher)
     {
-        $publisher = Publisher::findOrFail($id);
-
         $request->validate(
             [
-                'name'    => 'required|string|max:255',
+                'name'    => 'required|string|max:255|unique:publishers,name,' . $publisher->id,
                 'address' => 'nullable|string|max:255',
-                'phone'   => 'nullable|string|max:50',
+                'phone'   => 'nullable|string|max:20',
                 'email'   => 'nullable|email|max:255',
             ],
             [
                 'name.required' => 'Tên nhà xuất bản không được để trống',
+                'name.unique'   => 'Tên nhà xuất bản đã tồn tại',
                 'email.email'   => 'Email không đúng định dạng',
             ]
         );
 
-        $publisher->update($request->only([
-            'name',
-            'address',
-            'phone',
-            'email',
-        ]));
+        try {
+            $publisher->update($request->all());
 
-        return redirect()
-            ->route('publishers.index')
-            ->with('success', 'Cập nhật nhà xuất bản thành công');
+            return redirect()
+                ->route('publishers.index')
+                ->with('success', 'Cập nhật nhà xuất bản thành công!');
+        } catch (\Exception $e) {
+            Log::error("Lỗi cập nhật NXB: " . $e->getMessage());
+            return back()->withInput()->with('error', 'Không thể cập nhật thông tin.');
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Xóa nhà xuất bản.
      */
-    public function destroy($id)
+    public function destroy(Publisher $publisher)
     {
-        $publisher = Publisher::findOrFail($id);
-        $publisher->delete();
+        try {
+            // Kiểm tra xem NXB có đang liên kết với quyển sách nào không
+            if ($publisher->books()->count() > 0) {
+                return back()->with('error', 'Không thể xóa nhà xuất bản này vì đang có sách thuộc về họ!');
+            }
 
-        return redirect()
-            ->route('publishers.index')
-            ->with('success', 'Xóa nhà xuất bản thành công');
+            $publisher->delete();
+            return redirect()
+                ->route('publishers.index')
+                ->with('success', 'Xóa nhà xuất bản thành công!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Lỗi khi xóa dữ liệu.');
+        }
     }
 }

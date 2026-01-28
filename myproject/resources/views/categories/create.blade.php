@@ -1,6 +1,6 @@
 @extends('dashboard')
 
-@section('title', 'Thêm thể loại')
+@section('title', 'Thêm thể loại mới - ABC Book')
 
 @section('content')
     <div class="edit-book-container">

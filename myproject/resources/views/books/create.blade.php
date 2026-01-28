@@ -1,12 +1,12 @@
 @extends('dashboard')
 
-@section('title', 'Thêm sách mới')
+@section('title', 'Thêm sách mới - ABC Book')
 
 @section('content')
-    <div class="form-wrapper">
+    <div class="edit-book-container">
         <h2>Thêm sách mới</h2>
 
-        <form action="{{ route('books.store') }}" method="POST" class="main-form">
+        <form action="{{ route('books.store') }}" method="POST" class="edit-book-form">
             @csrf
 
             <div class="form-group">
