@@ -3,10 +3,10 @@
 @section('title', 'Thêm sách mới')
 
 @section('content')
-    <div class="edit-book-container">
+    <div class="form-wrapper">
         <h2>Thêm sách mới</h2>
 
-        <form action="{{ route('books.store') }}" method="POST" class="edit-book-form">
+        <form action="{{ route('books.store') }}" method="POST" class="main-form">
             @csrf
 
             <div class="form-group">

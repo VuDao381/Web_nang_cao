@@ -3,10 +3,10 @@
 @section('title', 'Sửa sách')
 
 @section('content')
-    <div class="edit-book-container">
+    <div class="form-wrapper">
         <h2>✏️ Sửa sách</h2>
 
-        <form action="{{ route('books.update', $books->id) }}" method="POST" class="edit-book-form">
+        <form action="{{ route('books.update', $books->id) }}" method="POST" class="main-form">
             @csrf
             @method('PUT')
 
