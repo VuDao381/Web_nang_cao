@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\BookController;
+use App\Http\Controllers\BooksController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PublisherController;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Quản lý Sách (Sử dụng Resource để có đầy đủ index, create, store, edit, update, destroy)
-    Route::resource('books', BookController::class);
+    Route::resource('books', BooksController::class);
 
     // Quản lý Thể loại
     Route::resource('categories', CategoryController::class);
