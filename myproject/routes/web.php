@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 
 // Trang chủ
 Route::get('/', function () {
-    return view('welcome');
+    $books = \App\Models\Books::latest()->paginate(20);
+    return view('welcome', compact('books'));
 });
 
 // Trang Dashboard (Yêu cầu đăng nhập)
@@ -24,7 +25,7 @@ Route::get('/dashboard', function () {
 
 // Nhóm các Route yêu cầu xác thực người dùng (Auth)
 Route::middleware('auth')->group(function () {
-    
+
     // Quản lý Profile thành viên
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -41,8 +42,8 @@ Route::middleware('auth')->group(function () {
 });
 
 // Các file Route tách rời (Đảm bảo các file này tồn tại trong thư mục routes/)
-require __DIR__.'/auth.php';
-require __DIR__.'/books.php';
-require __DIR__.'/category.php';
-require __DIR__.'/publisher.php';
-require __DIR__.'/user.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/books.php';
+require __DIR__ . '/category.php';
+require __DIR__ . '/publisher.php';
+require __DIR__ . '/user.php';
