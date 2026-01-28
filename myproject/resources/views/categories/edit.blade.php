@@ -1,4 +1,4 @@
-@extends('layouts.myapp')
+@extends('dashboard')
 
 @section('title', 'Sửa thể loại')
 
