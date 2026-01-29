@@ -13,14 +13,37 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Trang chủ
-Route::get('/', function () {
-    $books = \App\Models\Books::latest()->paginate(20);
-    return view('welcome', compact('books'));
+Route::get('/', function (\Illuminate\Http\Request $request) {
+    $keyword = $request->input('keyword');
+
+    $books = \App\Models\Books::when($keyword, function ($query, $keyword) {
+        return $query->where('title', 'like', "%{$keyword}%")
+            ->orWhere('author', 'like', "%{$keyword}%");
+    })->latest()->paginate(20);
+
+    return view('user.welcome', compact('books'));
 });
+
+// Trang chi tiết sách
+Route::get('/book/{slug}', function ($slug) {
+    // Tìm trong toàn bộ sách xem cuốn nào có slug (tạo từ title) trùng khớp
+    // Lưu ý: Cách này tiện lợi cho BTL nhưng không tối ưu nếu dữ liệu quá lớn (nên thêm cột slug vào DB)
+    $books = \App\Models\Books::with(['category', 'publisher'])->get();
+
+    $book = $books->first(function ($item) use ($slug) {
+        return \Illuminate\Support\Str::slug($item->title) === $slug;
+    });
+
+    if (!$book) {
+        abort(404);
+    }
+
+    return view('user.detail', compact('book'));
+})->name('book.detail');
 
 // Trang Dashboard (Yêu cầu đăng nhập)
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Nhóm các Route yêu cầu xác thực người dùng (Auth)
@@ -43,7 +66,4 @@ Route::middleware('auth')->group(function () {
 
 // Các file Route tách rời (Đảm bảo các file này tồn tại trong thư mục routes/)
 require __DIR__ . '/auth.php';
-require __DIR__ . '/books.php';
-require __DIR__ . '/category.php';
-require __DIR__ . '/publisher.php';
 require __DIR__ . '/user.php';

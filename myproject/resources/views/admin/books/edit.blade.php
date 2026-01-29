@@ -1,8 +1,8 @@
-@extends('dashboard')
+@extends('admin.dashboard')
 
 @section('title', 'Sửa sách')
 
-@section('content')
+@section('admin_content')
     <div class="form-wrapper">
         <h2>✏️ Sửa sách</h2>
 

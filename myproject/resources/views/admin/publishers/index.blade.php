@@ -1,8 +1,8 @@
-@extends('dashboard')
+@extends('admin.dashboard')
 
 @section('title', 'Quản lý Nhà xuất bản - ABC Book')
 
-@section('content')
+@section('admin_content')
     <div class="publisher-container">
 
         <div class="category-header">

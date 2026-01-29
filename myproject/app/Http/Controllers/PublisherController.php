@@ -14,7 +14,7 @@ class PublisherController extends Controller
     public function index()
     {
         $publishers = Publisher::orderBy('id', 'desc')->paginate(10);
-        return view('publishers.index', compact('publishers'));
+        return view('admin.publishers.index', compact('publishers'));
     }
 
     /**
@@ -22,7 +22,7 @@ class PublisherController extends Controller
      */
     public function create()
     {
-        return view('publishers.create');
+        return view('admin.publishers.create');
     }
 
     /**
@@ -32,15 +32,15 @@ class PublisherController extends Controller
     {
         $request->validate(
             [
-                'name'    => 'required|string|max:255|unique:publishers,name',
+                'name' => 'required|string|max:255|unique:publishers,name',
                 'address' => 'nullable|string|max:255',
-                'phone'   => 'nullable|string|max:20',
-                'email'   => 'nullable|email|max:255',
+                'phone' => 'nullable|string|max:20',
+                'email' => 'nullable|email|max:255',
             ],
             [
                 'name.required' => 'Tên nhà xuất bản không được để trống',
-                'name.unique'   => 'Tên nhà xuất bản này đã tồn tại',
-                'email.email'   => 'Email không đúng định dạng',
+                'name.unique' => 'Tên nhà xuất bản này đã tồn tại',
+                'email.email' => 'Email không đúng định dạng',
             ]
         );
 
@@ -61,7 +61,7 @@ class PublisherController extends Controller
      */
     public function edit(Publisher $publisher)
     {
-        return view('publishers.edit', compact('publisher'));
+        return view('admin.publishers.edit', compact('publisher'));
     }
 
     /**
@@ -71,15 +71,15 @@ class PublisherController extends Controller
     {
         $request->validate(
             [
-                'name'    => 'required|string|max:255|unique:publishers,name,' . $publisher->id,
+                'name' => 'required|string|max:255|unique:publishers,name,' . $publisher->id,
                 'address' => 'nullable|string|max:255',
-                'phone'   => 'nullable|string|max:20',
-                'email'   => 'nullable|email|max:255',
+                'phone' => 'nullable|string|max:20',
+                'email' => 'nullable|email|max:255',
             ],
             [
                 'name.required' => 'Tên nhà xuất bản không được để trống',
-                'name.unique'   => 'Tên nhà xuất bản đã tồn tại',
-                'email.email'   => 'Email không đúng định dạng',
+                'name.unique' => 'Tên nhà xuất bản đã tồn tại',
+                'email.email' => 'Email không đúng định dạng',
             ]
         );
 

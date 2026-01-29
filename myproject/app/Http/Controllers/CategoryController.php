@@ -17,7 +17,7 @@ class CategoryController extends Controller
         // Lấy danh sách, sắp xếp mới nhất lên đầu, phân trang 10 mục mỗi trang
         $categories = Category::orderBy('created_at', 'desc')->paginate(10);
 
-        return view('categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -25,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return view('admin.categories.create');
     }
 
     /**
@@ -35,16 +35,16 @@ class CategoryController extends Controller
     {
         // 1. Validate dữ liệu
         $request->validate([
-            'name'        => 'required|string|max:255|unique:categories,name',
-            'slug'        => 'nullable|string|max:255',
+            'name' => 'required|string|max:255|unique:categories,name',
+            'slug' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'is_active'   => 'nullable', // Chấp nhận trạng thái checkbox
+            'is_active' => 'nullable', // Chấp nhận trạng thái checkbox
         ]);
 
         try {
             // 2. Xử lý Slug
-            $slug = $request->slug 
-                ? Str::slug($request->slug) 
+            $slug = $request->slug
+                ? Str::slug($request->slug)
                 : Str::slug($request->name);
 
             // Kiểm tra trùng slug lần nữa để đảm bảo
@@ -54,10 +54,10 @@ class CategoryController extends Controller
 
             // 3. Tạo mới
             Category::create([
-                'name'        => $request->name,
-                'slug'        => $slug,
+                'name' => $request->name,
+                'slug' => $slug,
                 'description' => $request->description,
-                'is_active'   => $request->has('is_active') ? true : false,
+                'is_active' => $request->has('is_active') ? true : false,
             ]);
 
             return redirect()
@@ -75,7 +75,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('categories.edit', compact('category'));
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -85,15 +85,15 @@ class CategoryController extends Controller
     {
         // 1. Validate (Bỏ qua ID hiện tại khi check unique name)
         $request->validate([
-            'name'        => 'required|string|max:255|unique:categories,name,' . $category->id,
-            'slug'        => 'nullable|string|max:255',
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'slug' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'is_active'   => 'nullable',
+            'is_active' => 'nullable',
         ]);
 
         try {
-            $slug = $request->slug 
-                ? Str::slug($request->slug) 
+            $slug = $request->slug
+                ? Str::slug($request->slug)
                 : Str::slug($request->name);
 
             // 2. Check trùng slug (trừ chính nó)
@@ -103,10 +103,10 @@ class CategoryController extends Controller
 
             // 3. Update
             $category->update([
-                'name'        => $request->name,
-                'slug'        => $slug,
+                'name' => $request->name,
+                'slug' => $slug,
                 'description' => $request->description,
-                'is_active'   => $request->has('is_active') ? true : false,
+                'is_active' => $request->has('is_active') ? true : false,
             ]);
 
             return redirect()

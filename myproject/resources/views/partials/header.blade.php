@@ -1,58 +1,43 @@
-<header>
-
-    <div class="top-header">
-        <span>📞 0987 654 321</span>
-        <span>✉ abcbook@gmail.com</span>
-        <span>📍 123 Đường ABC, Hà Nội</span>
-
-        <nav>
+<header class="top-header">
+    <span>Hotline: <b>0912.345.678</b></span>
+    <nav>
+        <a href="#">Giới thiệu</a>
+        <a href="#">Liên hệ</a>
+        @if (Route::has('login'))
             @auth
-                <span>👋 Xin chào, <strong>{{ Auth::user()->name }}</strong></span>
-
-                <form method="POST" action="{{ route('logout') }}" style="display:inline;">
-                    @csrf
-                    <button type="submit" class="logout-btn">
-                        Đăng xuất
-                    </button>
-                </form>
+                <a href="{{ url('/dashboard') }}">Dashboard</a>
             @else
                 <a href="{{ route('login') }}">Đăng nhập</a>
-                <a href="{{ route('register') }}" class="register-btn">Đăng ký</a>
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}">Đăng ký</a>
+                @endif
             @endauth
-        </nav>
-    </div>
-
-    <div class="main-header">
-        <h1 class="logo">📚 ABC Book</h1>
-
-        <div class="search-cart">
-            <form class="search-box" action="{{ route('books.index') }}" method="GET">
-                <input
-                    type="text"
-                    name="keyword"
-                    placeholder="Tìm theo tên sách, tác giả, NXB, thể loại..."
-                    value="{{ request('keyword') }}"
-                >
-                <button type="submit">Search</button>
-            </form>
-
-            <a href="#" class="cart-btn">
-                🛒
-                <span class="cart-count">0</span>
-            </a>
-        </div>
-    </div>
-
-    <nav class="main-menu">
-        <a href="{{ url('/') }}">Home</a>
-        <a href="{{ route('books.index') }}">Books</a>
-        <a href="{{ route('categories.index') }}">Category</a>
-        <a href="{{ route('publishers.index') }}">Publisher</a>
-        <a href="{{ route('users.index') }}">User</a>
-
-        @auth
-            <a href="{{ route('dashboard') }}">Dashboard</a>
-        @endauth
+        @endif
     </nav>
-
 </header>
+
+<div class="main-header">
+    <div class="logo">
+        <i class="fa-solid fa-book-open"></i> ABC BOOK
+    </div>
+
+    <div class="search-cart">
+        <form action="/" method="GET" class="search-box">
+            <input type="text" name="keyword" placeholder="Tìm kiếm sách, tác giả..." value="{{ request('keyword') }}">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+        <a href="#" class="cart-btn">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-count">0</span>
+        </a>
+    </div>
+</div>
+
+<div class="main-menu">
+    <a href="/">TRANG CHỦ</a>
+    <a href="#">THỂ LOẠI</a>
+    <a href="#">TÁC GIẢ</a>
+    <a href="#">NHÀ XUẤT BẢN</a>
+    <a href="#">KHUYẾN MÃI</a>
+    <a href="#">TIN TỨC</a>
+</div>

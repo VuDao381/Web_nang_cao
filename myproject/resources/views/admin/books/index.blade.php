@@ -1,8 +1,8 @@
-@extends('dashboard')
+@extends('admin.dashboard')
 
 @section('title', 'Books List')
 
-@section('content')
+@section('admin_content')
     <div class="books-container">
 
         {{-- Header --}}

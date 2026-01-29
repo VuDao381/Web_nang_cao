@@ -1,21 +1,180 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.myapp')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+@section('title', 'ABC Book Admin')
+
+@section('styles')
     <link rel="stylesheet" href="{{ asset('css/books.css') }}">
     <link rel="stylesheet" href="{{ asset('css/category.css') }}">
     <link rel="stylesheet" href="{{ asset('css/publisher.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>@yield('title', 'ABC Book Admin')</title>
-</head>
+    <style>
+        /* Admin specific sidebar overriding or additional styles if not in dashboard.css */
 
-<body>
+        .sidebar {
+            width: 260px;
+            background: #1a3020;
+            height: 100vh;
+            position: fixed;
+            color: #dceddc;
+            transition: all 0.3s;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
 
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            background: #2e7d32;
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-label {
+            padding: 20px 25px 10px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #6a8e6a;
+            letter-spacing: 1px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 25px;
+            color: #dceddc;
+            text-decoration: none;
+            transition: 0.3s;
+            cursor: pointer;
+            justify-content: space-between;
+        }
+
+        .menu-item:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .menu-item.active {
+            color: #fff;
+            background: #388e3c;
+            border-left: 4px solid #a5d6a7;
+        }
+
+        .menu-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-item i:first-child {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .arrow {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        /* Submenu */
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
+            transition: max-height 0.3s ease-out;
+        }
+
+        .submenu a {
+            display: block;
+            padding: 10px 10px 10px 60px;
+            color: #b9cfb9;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .submenu a:hover {
+            color: #fff;
+            padding-left: 65px;
+        }
+
+        .menu-group.open .submenu {
+            max-height: 500px;
+        }
+
+        .menu-group.open .arrow {
+            transform: rotate(90deg);
+        }
+
+        /* Main Content */
+        .main-wrapper {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f4fbf4;
+        }
+
+        .topbar {
+            height: 70px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .search-area {
+            display: flex;
+            align-items: center;
+            background: #f1f8f1;
+            border-radius: 20px;
+            padding: 5px 15px;
+            width: 380px;
+            border: 1px solid #e0eee0;
+        }
+
+        .search-area input {
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 5px 10px;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 30px;
+            flex: 1;
+        }
+
+        footer {
+            padding: 15px;
+            text-align: center;
+            background: #fff;
+            font-size: 13px;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+    </style>
+@endsection
+
+@section('content')
     <aside class="sidebar">
         <div class="sidebar-header">
             📚 <span style="color: #a5d6a7">ABC</span> BOOK
@@ -53,7 +212,7 @@
                 </div>
             </div>
 
-            {{-- KHỐI 2: QUẢN LÝ THỂ LOẠI (Cùng cấp - Màu đồng bộ) --}}
+            {{-- KHỐI 2: QUẢN LÝ THỂ LOẠI --}}
             <div class="menu-group {{ Request::is('categories*') ? 'open' : '' }}">
                 <div class="menu-item {{ Request::is('categories*') ? 'active' : '' }}" onclick="toggleSubmenu(this)">
                     <div class="menu-content">
@@ -74,7 +233,7 @@
                 </div>
             </div>
 
-            {{-- KHỐI 3: QUẢN LÝ NHÀ XUẤT BẢN (Cùng cấp - Màu đồng bộ) --}}
+            {{-- KHỐI 3: QUẢN LÝ NHÀ XUẤT BẢN --}}
             <div class="menu-group {{ Request::is('publishers*') ? 'open' : '' }}">
                 <div class="menu-item {{ Request::is('publishers*') ? 'active' : '' }}" onclick="toggleSubmenu(this)">
                     <div class="menu-content">
@@ -144,20 +303,20 @@
         </header>
 
         <div class="container">
-            @yield('content')
+            @yield('admin_content')
         </div>
 
         <footer>
             © 2026 <strong>ABC Book Admin</strong>. All rights reserved.
         </footer>
     </main>
+@endsection
 
+@section('scripts')
     <script>
         function toggleSubmenu(element) {
             const group = element.parentElement;
             group.classList.toggle('open');
         }
     </script>
-</body>
-
-</html>
+@endsection

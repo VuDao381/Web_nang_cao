@@ -20,19 +20,19 @@ class BooksController extends Controller
             ->when($keyword, function ($query) use ($keyword) {
                 $query->where(function ($q) use ($keyword) {
                     $q->where('title', 'like', "%$keyword%")
-                    ->orWhere('author', 'like', "%$keyword%")
-                    ->orWhereHas('category', function ($q2) use ($keyword) {
-                        $q2->where('name', 'like', "%$keyword%");
-                    })
-                    ->orWhereHas('publisher', function ($q3) use ($keyword) {
-                        $q3->where('name', 'like', "%$keyword%");
-                    });
+                        ->orWhere('author', 'like', "%$keyword%")
+                        ->orWhereHas('category', function ($q2) use ($keyword) {
+                            $q2->where('name', 'like', "%$keyword%");
+                        })
+                        ->orWhereHas('publisher', function ($q3) use ($keyword) {
+                            $q3->where('name', 'like', "%$keyword%");
+                        });
                 });
             })
-            ->paginate(20) 
-            ->withQueryString();  
+            ->paginate(20)
+            ->withQueryString();
 
-        return view('books.index', compact('books'));
+        return view('admin.books.index', compact('books'));
     }
 
     /**
@@ -43,7 +43,7 @@ class BooksController extends Controller
         $categories = Category::all();
         $publishers = Publisher::all();
 
-        return view('books.create', compact('categories', 'publishers'));
+        return view('admin.books.create', compact('categories', 'publishers'));
     }
 
     /**
@@ -52,16 +52,16 @@ class BooksController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'          => 'required|string|max:255',
-            'author'         => 'required|string|max:255',
-            'price'          => 'required|integer|min:0',
-            'quantity'       => 'required|integer|min:0',
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'price' => 'required|integer|min:0',
+            'quantity' => 'required|integer|min:0',
             'published_year' => 'nullable|digits:4|integer|min:1000|max:' . date('Y'),
-            'pages'          => 'nullable|integer|min:1',
-            'description'    => 'nullable|string',
-            'image'          => 'required|url',
-            'category_id'    => 'required|exists:categories,id',
-            'publisher_id'   => 'required|exists:publishers,id',
+            'pages' => 'nullable|integer|min:1',
+            'description' => 'nullable|string',
+            'image' => 'required|url',
+            'category_id' => 'required|exists:categories,id',
+            'publisher_id' => 'required|exists:publishers,id',
         ]);
 
         Books::create($request->only([
@@ -89,7 +89,7 @@ class BooksController extends Controller
         $categories = Category::all();
         $publishers = Publisher::all();
 
-        return view('books.edit', compact('books', 'categories', 'publishers'));
+        return view('admin.books.edit', compact('books', 'categories', 'publishers'));
     }
 
     /**
@@ -98,16 +98,16 @@ class BooksController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'title'          => 'required|string|max:255',
-            'author'         => 'required|string|max:255',
-            'price'          => 'required|integer|min:0',
-            'quantity'       => 'required|integer|min:0',
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'price' => 'required|integer|min:0',
+            'quantity' => 'required|integer|min:0',
             'published_year' => 'nullable|digits:4|integer|min:1000|max:' . date('Y'),
-            'pages'          => 'nullable|integer|min:1',
-            'description'    => 'nullable|string',
-            'image'          => 'required|url',
-            'category_id'    => 'required|exists:categories,id',
-            'publisher_id'   => 'required|exists:publishers,id',
+            'pages' => 'nullable|integer|min:1',
+            'description' => 'nullable|string',
+            'image' => 'required|url',
+            'category_id' => 'required|exists:categories,id',
+            'publisher_id' => 'required|exists:publishers,id',
         ]);
 
         $books = Books::findOrFail($id);

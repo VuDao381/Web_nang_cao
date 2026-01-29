@@ -1,8 +1,8 @@
-@extends('dashboard')
+@extends('admin.dashboard')
 
 @section('title', 'Sửa thể loại')
 
-@section('content')
+@section('admin_content')
 <div class="edit-book-container">
     <h2>✏️ Sửa thể loại</h2>
 
