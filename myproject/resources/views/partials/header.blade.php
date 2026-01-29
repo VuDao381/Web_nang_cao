@@ -35,9 +35,15 @@
             <input type="text" name="keyword" placeholder="Tìm kiếm sách, tác giả..." value="{{ request('keyword') }}">
             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
-        <a href="#" class="cart-btn">
+        <a href="{{ route('cart.index') }}" class="cart-btn">
             <i class="fa-solid fa-cart-shopping"></i>
-            <span class="cart-count">0</span>
+            <span class="cart-count">
+                @auth
+                    {{ Auth::user()->cart ? Auth::user()->cart->items->sum('quantity') : 0 }}
+                @else
+                    0
+                @endauth
+            </span>
         </a>
     </div>
 </div>
