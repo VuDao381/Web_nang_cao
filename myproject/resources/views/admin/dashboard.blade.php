@@ -254,6 +254,27 @@
                 </div>
             </div>
 
+            {{-- KHỐI 4: QUẢN LÝ NGƯỜI DÙNG --}}
+            <div class="menu-group {{ Request::is('users*') ? 'open' : '' }}">
+                <div class="menu-item {{ Request::is('users*') ? 'active' : '' }}" onclick="toggleSubmenu(this)">
+                    <div class="menu-content">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Quản lý người dùng</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow"></i>
+                </div>
+                <div class="submenu">
+                    <a href="{{ route('users.index') }}"
+                        style="{{ Request::is('users') ? 'color:#fff; font-weight:bold;' : '' }}">
+                        <i class="fa-solid fa-list" style="font-size: 11px; margin-right: 8px;"></i> Danh sách User
+                    </a>
+                    <a href="{{ route('users.create') }}"
+                        style="{{ Request::is('users/create') ? 'color:#fff; font-weight:bold;' : '' }}">
+                        <i class="fa-solid fa-user-plus" style="font-size: 11px; margin-right: 8px;"></i> Thêm User mới
+                    </a>
+                </div>
+            </div>
+
             <div class="menu-label">Hệ thống</div>
             <div class="menu-group">
                 <div class="menu-item" onclick="toggleSubmenu(this)">

@@ -260,7 +260,11 @@
                     {{-- <span class="old-price">150.000đ</span> --}}
                 </div>
 
-                <div class="actions" style="display: flex; gap: 20px; align-items: center;">
+                <form action="{{ route('cart.add') }}" method="POST" class="actions"
+                    style="display: flex; gap: 20px; align-items: center;">
+                    @csrf
+                    <input type="hidden" name="book_id" value="{{ $book->id }}">
+
                     <div class="quantity-selector">
                         <button type="button" onclick="changeQty(-1)">-</button>
                         <input type="number" id="qty" name="quantity" value="1" min="1" max="{{ $book->quantity }}"
@@ -268,10 +272,16 @@
                         <button type="button" onclick="changeQty(1)">+</button>
                     </div>
 
-                    <button class="btn-buy-now">
+                    <button type="submit" class="btn-buy-now">
                         <i class="fa-solid fa-cart-plus" style="margin-right: 8px"></i> Thêm vào giỏ hàng
                     </button>
-                </div>
+                </form>
+
+                @if(session('success'))
+                    <div style="margin-top: 10px; color: green; font-weight: bold;">
+                        <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
+                    </div>
+                @endif
 
                 <script>
                     function changeQty(amount) {

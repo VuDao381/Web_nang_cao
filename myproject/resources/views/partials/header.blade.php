@@ -5,7 +5,16 @@
         <a href="#">Liên hệ</a>
         @if (Route::has('login'))
             @auth
-                <a href="{{ url('/dashboard') }}">Dashboard</a>
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('dashboard') }}">Quản trị</a>
+                @endif
+                <a href="{{ route('profile.edit') }}">Tài khoản</a>
+                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                    @csrf
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                        Đăng xuất
+                    </a>
+                </form>
             @else
                 <a href="{{ route('login') }}">Đăng nhập</a>
                 @if (Route::has('register'))

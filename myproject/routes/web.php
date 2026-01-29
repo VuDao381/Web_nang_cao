@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BooksController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PublisherController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +23,7 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
     })->latest()->paginate(20);
 
     return view('user.welcome', compact('books'));
-});
+})->name('home');
 
 // Trang chi tiết sách
 Route::get('/book/{slug}', function ($slug) {
@@ -41,20 +42,20 @@ Route::get('/book/{slug}', function ($slug) {
     return view('user.detail', compact('book'));
 })->name('book.detail');
 
-// Trang Dashboard (Yêu cầu đăng nhập)
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// --- ADMIN ROUTES (Yêu cầu đăng nhập + Role Admin) ---
+Route::middleware(['auth', 'admin'])->group(function () {
 
-// Nhóm các Route yêu cầu xác thực người dùng (Auth)
-Route::middleware('auth')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
 
     // Quản lý Profile thành viên
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Quản lý Sách (Sử dụng Resource để có đầy đủ index, create, store, edit, update, destroy)
+    // Quản lý Sách
     Route::resource('books', BooksController::class);
 
     // Quản lý Thể loại
@@ -62,6 +63,18 @@ Route::middleware('auth')->group(function () {
 
     // Quản lý Nhà xuất bản
     Route::resource('publishers', PublisherController::class);
+
+    // Quản lý Người dùng
+    Route::resource('users', UserController::class);
+});
+
+// --- USER ROUTES (Yêu cầu đăng nhập) ---
+Route::middleware('auth')->group(function () {
+    // --- CART ROUTES ---
+    Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [\App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/update', [\App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
+    Route::get('/cart/remove/{id}', [\App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
 });
 
 // Các file Route tách rời (Đảm bảo các file này tồn tại trong thư mục routes/)
