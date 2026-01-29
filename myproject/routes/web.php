@@ -50,10 +50,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return view('admin.dashboard');
     })->name('dashboard');
 
-    // Quản lý Profile thành viên
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 
     // Quản lý Sách
     Route::resource('books', BooksController::class);
@@ -70,6 +67,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 // --- USER ROUTES (Yêu cầu đăng nhập) ---
 Route::middleware('auth')->group(function () {
+    // Quản lý Profile thành viên (Ai đăng nhập cũng được sửa)
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     // --- CART ROUTES ---
     Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [\App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add');
