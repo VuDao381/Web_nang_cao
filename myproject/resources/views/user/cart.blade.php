@@ -358,16 +358,17 @@
         </div>
     </div>
 
-    {{-- Success Modal --}}
-    <div id="successModal" class="modal-overlay">
+    {{-- Warning/Error Modal --}}
+    <div id="warningModal" class="modal-overlay">
         <div class="modal-box">
-            <div class="modal-icon">
-                <i class="fa-solid fa-circle-check"></i>
+            <div class="modal-icon" style="color: #e74c3c;">
+                <i class="fa-solid fa-triangle-exclamation"></i>
             </div>
-            <div class="modal-title">Đặt hàng thành công!</div>
-            <div class="modal-text">Cảm ơn bạn đã mua sắm. Đơn hàng của bạn đang được xử lý.</div>
+            <div class="modal-title">Thông báo</div>
+            <div class="modal-text" id="warningText">Có lỗi xảy ra</div>
             <div class="modal-buttons">
-                <button class="btn-modal btn-confirm" onclick="window.location.href='/'">OK</button>
+                <button class="btn-modal btn-cancel" onclick="closeModal('warningModal')">Đóng</button>
+                <button class="btn-modal btn-confirm" id="btnRedirectProfile" style="display:none;" onclick="window.location.href='{{ route('profile.edit') }}'">Cập nhật ngay</button>
             </div>
         </div>
     </div>
@@ -406,12 +407,25 @@
                     // Hiện modal thành công
                     document.getElementById('successModal').style.display = 'flex';
                 } else {
-                    alert('Có lỗi xảy ra, vui lòng thử lại!');
+                    // Cập nhật nội dung modal cảnh báo
+                    document.getElementById('warningText').innerText = data.message;
+                    
+                    // Nếu lỗi liên quan đến thiếu thông tin (địa chỉ/sđt), hiện nút cập nhật
+                    const btnRedirect = document.getElementById('btnRedirectProfile');
+                    if (data.message && (data.message.includes('Địa chỉ') || data.message.includes('đầy đủ'))) {
+                        btnRedirect.style.display = 'inline-block';
+                    } else {
+                        btnRedirect.style.display = 'none';
+                    }
+
+                    // Hiện modal cảnh báo
+                    document.getElementById('warningModal').style.display = 'flex';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Có lỗi xảy ra, vui lòng thử lại!');
+                document.getElementById('warningText').innerText = 'Có lỗi xảy ra, vui lòng thử lại!';
+                document.getElementById('warningModal').style.display = 'flex';
             });
         }
     </script>

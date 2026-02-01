@@ -117,6 +117,25 @@
             background: #d32f2f;
         }
 
+        .btn-buy-immediate {
+            display: inline-block;
+            background: #fbc02d;
+            /* Yellow */
+            color: #fff;
+            padding: 12px 40px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+            text-decoration: none;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-buy-immediate:hover {
+            background: #f9a825;
+        }
+
         .book-desc {
             margin-top: 30px;
             border-top: 1px solid #eee;
@@ -274,6 +293,10 @@
 
                     <button type="submit" class="btn-buy-now">
                         <i class="fa-solid fa-cart-plus" style="margin-right: 8px"></i> Thêm vào giỏ hàng
+                    </button>
+
+                    <button type="submit" name="buy_now" value="1" class="btn-buy-immediate">
+                        <i class="fa-solid fa-bolt" style="margin-right: 8px"></i> Mua ngay
                     </button>
                 </form>
 

@@ -57,6 +57,10 @@ class CartController extends Controller
             ]);
         }
 
+        if ($request->has('buy_now') && $request->buy_now == 1) {
+            return redirect()->route('cart.index');
+        }
+
         return redirect()->back()->with('success', 'Đã thêm vào giỏ hàng!');
     }
 
@@ -113,6 +117,17 @@ class CartController extends Controller
         $totalPrice = 0;
         foreach ($cart->items as $item) {
             $totalPrice += $item->quantity * $item->price;
+        }
+
+        // Validate Phone and Address
+        if (empty($user->address) || empty($user->phone)) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Vui lòng cập nhật đầy đủ Địa chỉ và Số điện thoại trong phần Tài khoản trước khi đặt hàng!'
+                ]);
+            }
+            return redirect()->route('profile.edit')->with('error', 'Vui lòng cập nhật đầy đủ Địa chỉ và Số điện thoại trước khi đặt hàng!');
         }
 
         // 1. Tạo đơn hàng
