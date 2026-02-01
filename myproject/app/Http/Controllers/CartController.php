@@ -94,4 +94,69 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Đã xóa sản phẩm khỏi giỏ hàng!');
     }
+
+    // Checkout
+    public function checkout(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $cart = Cart::with('items.book')->where('user_id', $user->id)->first();
+
+        if (!$cart || $cart->items->isEmpty()) {
+            return redirect()->back()->with('error', 'Giỏ hàng của bạn đang trống!');
+        }
+
+        // Tính tổng tiền
+        $totalPrice = 0;
+        foreach ($cart->items as $item) {
+            $totalPrice += $item->quantity * $item->price;
+        }
+
+        // 1. Tạo đơn hàng
+        // Lưu ý: Nếu user chưa có địa chỉ/sđt thì có thể để trống hoặc lấy mặc định. 
+        // Ở đây lấy từ thông tin user (nếu có)
+        $order = \App\Models\Order::create([
+            'user_id' => $user->id,
+            'total_price' => $totalPrice,
+            'status' => 'pending', // Chờ xử lý
+            'address' => $user->address ?? 'Chưa cập nhật địa chỉ',
+            'phone' => $user->phone ?? 'Chưa cập nhật SĐT',
+        ]);
+
+        // 2. Chuyển items từ Cart sang OrderItem
+        foreach ($cart->items as $item) {
+            \App\Models\OrderItem::create([
+                'order_id' => $order->id,
+                'book_id' => $item->book_id,
+                'quantity' => $item->quantity,
+                'price' => $item->price,
+            ]);
+        }
+
+        // --- Gửi thông báo cho Admin ---
+        $admins = \App\Models\User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            \App\Models\SystemNotification::create([
+                'user_id' => $admin->id,
+                'title' => 'Có đơn hàng mới #' . $order->id,
+                'message' => 'Người dùng ' . $user->name . ' vừa đặt đơn hàng trị giá ' . number_format($totalPrice) . 'đ',
+                'is_read' => false,
+            ]);
+        }
+
+        // 3. Xóa giỏ hàng
+        $cart->items()->delete();
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Đặt hàng thành công! Đơn hàng đang được xử lý.'
+            ]);
+        }
+
+        return redirect()->route('home')->with('success', 'Đặt hàng thành công! Đơn hàng đang được xử lý.');
+    }
 }

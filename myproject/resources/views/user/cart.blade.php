@@ -166,6 +166,81 @@
         background: #d4edda;
         color: #155724;
     }
+
+    /* Modal Styles */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-box {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        animation: fadeIn 0.2s ease-out;
+    }
+
+    .modal-icon {
+        font-size: 50px;
+        margin-bottom: 20px;
+        color: #2b6d2c;
+    }
+
+    .modal-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .modal-text {
+        color: #666;
+        margin-bottom: 25px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .btn-modal {
+        padding: 10px 25px;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        transition: 0.2s;
+    }
+
+    .btn-confirm {
+        background: #2b6d2c;
+        color: white;
+    }
+    .btn-confirm:hover { background: #245b26; }
+
+    .btn-cancel {
+        background: #eee;
+        color: #333;
+    }
+    .btn-cancel:hover { background: #ddd; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 </style>
 @endsection
 
@@ -239,7 +314,17 @@
                         <span>Tổng cộng:</span>
                         <span>{{ number_format($total, 0, ',', '.') }} đ</span>
                     </div>
-                    <a href="#" class="btn-checkout" onclick="alert('Chức năng thanh toán đang phát triển!')">Tiến hành thanh toán</a>
+                    <form id="checkout-form" action="{{ route('checkout') }}" method="POST">
+                        @csrf
+                        <button type="button" class="btn-checkout" style="border:none; cursor:pointer;" onclick="showConfirmModal()">
+                            Đặt hàng
+                        </button>
+                    </form>
+                    
+                    <p class="order-note" style="margin-top: 15px; font-size: 13px; color: #666; font-style: italic; line-height: 1.4;">
+                        <i class="fa-solid fa-circle-info" style="color: #2b6d2c; margin-right: 5px;"></i>
+                        Đơn hàng sẽ được xử lý trong vòng 24h và chúng tôi sẽ gửi thông báo cập nhật qua email của bạn.
+                    </p>
                     <a href="{{ route('home') }}" style="display: block; text-align: center; margin-top: 15px; color: #555; text-decoration: none;">
                         <i class="fa-solid fa-arrow-left"></i> Tiếp tục mua sắm
                     </a>
@@ -257,4 +342,77 @@
     </div>
 
     @include('partials.footer')
+
+    {{-- Confirm Modal --}}
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon" style="color: #f7b731;">
+                <i class="fa-solid fa-circle-question"></i>
+            </div>
+            <div class="modal-title">Xác nhận đặt hàng</div>
+            <div class="modal-text">Bạn có chắc chắn muốn đặt hàng không?</div>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-cancel" onclick="closeModal('confirmModal')">Hủy</button>
+                <button class="btn-modal btn-confirm" onclick="submitOrder()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+
+    {{-- Success Modal --}}
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="modal-title">Đặt hàng thành công!</div>
+            <div class="modal-text">Cảm ơn bạn đã mua sắm. Đơn hàng của bạn đang được xử lý.</div>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-confirm" onclick="window.location.href='/'">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function submitOrder() {
+            // Đóng modal xác nhận
+            closeModal('confirmModal');
+
+            // Gửi AJAX request
+            const form = document.getElementById('checkout-form');
+            const url = form.action;
+            const token = form.querySelector('input[name="_token"]').value;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Hiện modal thành công
+                    document.getElementById('successModal').style.display = 'flex';
+                } else {
+                    alert('Có lỗi xảy ra, vui lòng thử lại!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra, vui lòng thử lại!');
+            });
+        }
+    </script>
 @endsection

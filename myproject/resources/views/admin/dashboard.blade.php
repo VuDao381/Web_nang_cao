@@ -254,6 +254,16 @@
                 </div>
             </div>
 
+            {{-- KHỐI 5: QUẢN LÝ ĐƠN HÀNG --}}
+            <div class="menu-group {{ Request::is('orders*') ? 'open' : '' }}">
+                <a href="{{ route('orders.index') }}" class="menu-item {{ Request::is('orders*') ? 'active' : '' }}">
+                    <div class="menu-content">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span>Quản lý đơn hàng</span>
+                    </div>
+                </a>
+            </div>
+
             {{-- KHỐI 4: QUẢN LÝ NGƯỜI DÙNG --}}
             <div class="menu-group {{ Request::is('users*') ? 'open' : '' }}">
                 <div class="menu-item {{ Request::is('users*') ? 'active' : '' }}" onclick="toggleSubmenu(this)">
@@ -315,11 +325,103 @@
                 </form>
             </div>
 
-            <div class="user-profile">
-                <span style="margin-right: 12px; font-size: 14px;">Chào,
-                    <strong>{{ Auth::user()->name ?? 'Admin' }}</strong></span>
-                <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'Admin' }}&background=2e7d32&color=fff"
-                    width="38" style="border-radius: 50%; border: 2px solid #e8f5e9;">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <!-- User Profile -->
+                <div class="user-profile">
+                    <span style="margin-right: 12px; font-size: 14px;">Chào,
+                        <strong>{{ Auth::user()->name ?? 'Admin' }}</strong></span>
+                    <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'Admin' }}&background=2e7d32&color=fff"
+                        width="38" style="border-radius: 50%; border: 2px solid #e8f5e9;">
+                </div>
+
+                <!-- Notification -->
+                @php
+                    // Lấy thông báo chưa đọc của Admin
+                    $adminNotifs = collect();
+                    $unreadAdminCount = 0;
+                    if (Auth::check()) {
+                        $adminNotifs = \App\Models\SystemNotification::where('user_id', Auth::id())
+                            ->latest()->take(5)->get();
+                        $unreadAdminCount = \App\Models\SystemNotification::where('user_id', Auth::id())
+                            ->where('is_read', false)->count();
+                    }
+                @endphp
+                <div class="notification-wrapper" style="position: relative;">
+                    <a href="javascript:void(0)" class="notification-btn" id="admin-notif-btn" onclick="markAdminRead()"
+                        style="color: #333; font-size: 20px; text-decoration: none;">
+                        <i class="fa-solid fa-bell"></i>
+                        @if($unreadAdminCount > 0)
+                            <span id="admin-notif-badge"
+                                style="position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; padding: 2px 5px; font-size: 10px;">{{ $unreadAdminCount }}</span>
+                        @endif
+                    </a>
+                    <div class="notification-dropdown" id="admin-notif-dropdown">
+                        <div style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; color:#333;">Thông báo
+                            Admin</div>
+                        @forelse($adminNotifs as $notif)
+                            <div
+                                style="padding: 10px; border-bottom: 1px solid #eee; font-size: 13px; background: {{ $notif->is_read ? '#fff' : '#f0f8ff' }}">
+                                <div style="font-weight: 600; color: #2e7d32;">{{ $notif->title }}</div>
+                                <div style="color: #666;">{{ $notif->message }}</div>
+                                <small style="color: #999;">{{ $notif->created_at->diffForHumans() }}</small>
+                            </div>
+                        @empty
+                            <div style="padding: 10px; color: #999; text-align: center;">Không có thông báo mới</div>
+                        @endforelse
+                    </div>
+                </div>
+
+                <script>
+                    function markAdminRead() {
+                        const dropdown = document.getElementById('admin-notif-dropdown');
+
+                        // Toggle Logic
+                        if (dropdown.style.display === 'block') {
+                            dropdown.style.display = 'none';
+                            return;
+                        } else {
+                            dropdown.style.display = 'block';
+                        }
+
+                        const badge = document.getElementById('admin-notif-badge');
+                        if (badge) badge.style.display = 'none';
+
+                        fetch('{{ route("notifications.markRead") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({})
+                        });
+                    }
+
+                    // Click outside to close
+                    window.addEventListener('click', function (e) {
+                        if (!document.getElementById('admin-notif-btn').contains(e.target) &&
+                            !document.getElementById('admin-notif-dropdown').contains(e.target)) {
+                            document.getElementById('admin-notif-dropdown').style.display = 'none';
+                        }
+                    });
+                </script>
+
+                <style>
+                    /* .notification-wrapper:hover .notification-dropdown {
+                                display: block;
+                            } REMOVED HOVER */
+                    .notification-dropdown {
+                        display: none;
+                        position: absolute;
+                        top: 100%;
+                        right: 0;
+                        width: 300px;
+                        background: white;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                        border-radius: 8px;
+                        z-index: 1000;
+                        border: 1px solid #eee;
+                    }
+                </style>
             </div>
         </header>
 

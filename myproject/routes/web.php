@@ -46,9 +46,7 @@ Route::get('/book/{slug}', function ($slug) {
 Route::middleware(['auth', 'admin'])->group(function () {
 
     // Dashboard
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
 
 
@@ -63,6 +61,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Quản lý Người dùng
     Route::resource('users', UserController::class);
+
+    // Quản lý Đơn hàng
+    Route::resource('orders', \App\Http\Controllers\OrderController::class)->only(['index', 'show', 'update']);
 });
 
 // --- USER ROUTES (Yêu cầu đăng nhập) ---
@@ -77,6 +78,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/add', [\App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add');
     Route::post('/cart/update', [\App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
     Route::get('/cart/remove/{id}', [\App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/checkout', [\App\Http\Controllers\CartController::class, 'checkout'])->name('checkout');
+
+    // Notifications
+    Route::post('/notifications/mark-read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.markRead');
 });
 
 // Các file Route tách rời (Đảm bảo các file này tồn tại trong thư mục routes/)
