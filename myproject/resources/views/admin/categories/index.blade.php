@@ -9,9 +9,7 @@
         <div class="category-header">
             <h2>📂 Danh sách thể loại</h2>
 
-            <a href="{{ route('categories.create') }}" class="category-add-btn">
-                + Thêm thể loại
-            </a>
+
         </div>
 
         {{-- Thông báo --}}

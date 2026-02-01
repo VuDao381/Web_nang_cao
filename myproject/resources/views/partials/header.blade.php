@@ -146,7 +146,6 @@
 <div class="main-menu">
     <a href="/">TRANG CHỦ</a>
     <a href="#">THỂ LOẠI</a>
-    <a href="#">TÁC GIẢ</a>
     <a href="#">NHÀ XUẤT BẢN</a>
     <a href="#">KHUYẾN MÃI</a>
     <a href="#">TIN TỨC</a>

@@ -7,9 +7,7 @@
 
         <div class="publisher-header">
             <h2>👥 Quản lý người dùng</h2>
-            <a href="{{ route('users.create') }}" class="publisher-add-btn">
-                ➕ Thêm người dùng
-            </a>
+
         </div>
 
         {{-- Success --}}

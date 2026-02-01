@@ -88,15 +88,25 @@ class CartController extends Controller
     // Xóa item
     public function remove($id)
     {
-        $item = CartItem::findOrFail($id);
-
-        if ($item->cart->user_id !== Auth::id()) {
-            abort(403);
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login');
         }
 
-        $item->delete();
+        $cart = Cart::where('user_id', $user->id)->first();
 
-        return redirect()->back()->with('success', 'Đã xóa sản phẩm khỏi giỏ hàng!');
+        if ($cart) {
+            // Chỉ xóa item có đúng ID và thuộc về giỏ hàng của user hiện tại
+            $deleted = CartItem::where('id', $id)
+                ->where('cart_id', $cart->id)
+                ->delete();
+
+            if ($deleted) {
+                return redirect()->back()->with('success', 'Đã xóa sản phẩm khỏi giỏ hàng!');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Sản phẩm không tồn tại hoặc đã bị xóa!');
     }
 
     // Checkout
@@ -120,7 +130,10 @@ class CartController extends Controller
         }
 
         // Validate Phone and Address
-        if (empty($user->address) || empty($user->phone)) {
+        // Reload user to ensure we have latest data
+        $user = $user->fresh();
+
+        if (!$user->address || trim($user->address) === '' || !$user->phone || trim($user->phone) === '') {
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => false,
@@ -130,48 +143,73 @@ class CartController extends Controller
             return redirect()->route('profile.edit')->with('error', 'Vui lòng cập nhật đầy đủ Địa chỉ và Số điện thoại trước khi đặt hàng!');
         }
 
-        // 1. Tạo đơn hàng
-        // Lưu ý: Nếu user chưa có địa chỉ/sđt thì có thể để trống hoặc lấy mặc định. 
-        // Ở đây lấy từ thông tin user (nếu có)
-        $order = \App\Models\Order::create([
-            'user_id' => $user->id,
-            'total_price' => $totalPrice,
-            'status' => 'pending', // Chờ xử lý
-            'address' => $user->address ?? 'Chưa cập nhật địa chỉ',
-            'phone' => $user->phone ?? 'Chưa cập nhật SĐT',
-        ]);
+        // Start Transaction
+        try {
+            \Illuminate\Support\Facades\DB::beginTransaction();
 
-        // 2. Chuyển items từ Cart sang OrderItem
-        foreach ($cart->items as $item) {
-            \App\Models\OrderItem::create([
-                'order_id' => $order->id,
-                'book_id' => $item->book_id,
-                'quantity' => $item->quantity,
-                'price' => $item->price,
+            // 1. Tạo đơn hàng
+            $order = \App\Models\Order::create([
+                'user_id' => $user->id,
+                'total_price' => $totalPrice,
+                'status' => 'pending', // Chờ xử lý
+                'address' => $user->address,
+                'phone' => $user->phone,
             ]);
+
+            // 2. Chuyển items từ Cart sang OrderItem
+            foreach ($cart->items as $item) {
+                \App\Models\OrderItem::create([
+                    'order_id' => $order->id,
+                    'book_id' => $item->book_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                ]);
+            }
+
+            // 3. Xóa giỏ hàng
+            $cart->items()->delete();
+
+            \Illuminate\Support\Facades\DB::commit();
+
+            // --- Gửi thông báo cho Admin (Moved out of transaction or try-catch for safety) ---
+            // --- Gửi thông báo cho Admin (Moved out of transaction or try-catch for safety) ---
+            try {
+                // Check if table exists to avoid crash
+                if (\Illuminate\Support\Facades\Schema::hasTable('system_notifications')) {
+                    $admins = \App\Models\User::where('role', 'admin')->get();
+                    foreach ($admins as $admin) {
+                        \App\Models\SystemNotification::create([
+                            'user_id' => $admin->id,
+                            'title' => 'Có đơn hàng mới #' . $order->id,
+                            'message' => 'Người dùng ' . $user->name . ' vừa đặt đơn hàng trị giá ' . number_format($totalPrice) . 'đ',
+                            'is_read' => false,
+                        ]);
+                    }
+                }
+            } catch (\Throwable $e) {
+                // Log error but ABSOLUTELY DO NOT FAIL the order
+                \Illuminate\Support\Facades\Log::error('Notification Error (Ignored): ' . $e->getMessage());
+            }
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Đặt hàng thành công! Đơn hàng đang được xử lý.'
+                ]);
+            }
+
+            return redirect()->route('home')->with('success', 'Đặt hàng thành công! Đơn hàng đang được xử lý.');
+
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Lỗi hệ thống: ' . $e->getMessage()
+                ]);
+            }
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
-
-        // --- Gửi thông báo cho Admin ---
-        $admins = \App\Models\User::where('role', 'admin')->get();
-        foreach ($admins as $admin) {
-            \App\Models\SystemNotification::create([
-                'user_id' => $admin->id,
-                'title' => 'Có đơn hàng mới #' . $order->id,
-                'message' => 'Người dùng ' . $user->name . ' vừa đặt đơn hàng trị giá ' . number_format($totalPrice) . 'đ',
-                'is_read' => false,
-            ]);
-        }
-
-        // 3. Xóa giỏ hàng
-        $cart->items()->delete();
-
-        if ($request->ajax() || $request->wantsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Đặt hàng thành công! Đơn hàng đang được xử lý.'
-            ]);
-        }
-
-        return redirect()->route('home')->with('success', 'Đặt hàng thành công! Đơn hàng đang được xử lý.');
     }
 }

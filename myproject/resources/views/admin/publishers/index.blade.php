@@ -7,9 +7,7 @@
 
         <div class="category-header">
             <h2>🏢 Danh sách nhà xuất bản</h2>
-            <a href="{{ route('publishers.create') }}" class="category-add-btn">
-                + Thêm nhà xuất bản
-            </a>
+
         </div>
 
         <div class="category-table-wrapper">

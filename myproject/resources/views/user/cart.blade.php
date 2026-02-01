@@ -241,6 +241,37 @@
         from { opacity: 0; transform: translateY(-10px); }
         to { opacity: 1; transform: translateY(0); }
     }
+
+    .th-product { width: 40%; }
+    .th-price { width: 15%; }
+    .th-qty { width: 20%; }
+    .th-total { width: 15%; }
+    .th-action { width: 10%; }
+
+    .item-category { color: #777; }
+    .item-subtotal { font-weight: 600; color: #333; }
+    .item-action { text-align: center; }
+    
+    .form-update-qty { display: flex; align-items: center; }
+
+    .summary-note {
+        margin-top: 15px; 
+        font-size: 13px; 
+        color: #666; 
+        font-style: italic; 
+        line-height: 1.4;
+    }
+    .summary-note i {
+        color: #2b6d2c; 
+        margin-right: 5px;
+    }
+    .continue-shopping {
+        display: block; 
+        text-align: center; 
+        margin-top: 15px; 
+        color: #555; 
+        text-decoration: none;
+    }
 </style>
 @endsection
 
@@ -260,11 +291,11 @@
             <table class="cart-table">
                 <thead>
                     <tr>
-                        <th style="width: 40%;">Sản phẩm</th>
-                        <th style="width: 15%;">Đơn giá</th>
-                        <th style="width: 20%;">Số lượng</th>
-                        <th style="width: 15%;">Thành tiền</th>
-                        <th style="width: 10%;"></th>
+                        <th class="th-product">Sản phẩm</th>
+                        <th class="th-price">Đơn giá</th>
+                        <th class="th-qty">Số lượng</th>
+                        <th class="th-total">Thành tiền</th>
+                        <th class="th-action"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -280,22 +311,22 @@
                                     <img src="{{ $item->book->image ?: 'https://via.placeholder.com/60x80' }}" alt="{{ $item->book->title }}" class="cart-item-img">
                                     <div>
                                         <div class="cart-item-title">{{ $item->book->title }}</div>
-                                        <small style="color: #777;">{{ $item->book->category->name ?? 'N/A' }}</small>
+                                        <small class="item-category">{{ $item->book->category->name ?? 'N/A' }}</small>
                                     </div>
                                 </div>
                             </td>
                             <td>{{ number_format($item->price, 0, ',', '.') }} đ</td>
                             <td>
-                                <form action="{{ route('cart.update') }}" method="POST" style="display: flex; align-items: center;">
+                                <form action="{{ route('cart.update') }}" method="POST" class="form-update-qty">
                                     @csrf
                                     <input type="hidden" name="item_id" value="{{ $item->id }}">
                                     <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="qty-input">
                                     <button type="submit" class="btn-update" title="Cập nhật"><i class="fa-solid fa-rotate"></i></button>
                                 </form>
                             </td>
-                            <td style="font-weight: 600; color: #333;">{{ number_format($subtotal, 0, ',', '.') }} đ</td>
-                            <td style="text-align: center;">
-                                <a href="{{ route('cart.remove', $item->id) }}" class="btn-remove" onclick="return confirm('Bạn có chắc muốn xóa không?')">
+                            <td class="item-subtotal">{{ number_format($subtotal, 0, ',', '.') }} đ</td>
+                            <td class="item-action">
+                                <a href="javascript:void(0)" class="btn-remove" onclick="showDeleteModal('{{ route('cart.remove', $item->id) }}')">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </a>
                             </td>
@@ -321,11 +352,11 @@
                         </button>
                     </form>
                     
-                    <p class="order-note" style="margin-top: 15px; font-size: 13px; color: #666; font-style: italic; line-height: 1.4;">
-                        <i class="fa-solid fa-circle-info" style="color: #2b6d2c; margin-right: 5px;"></i>
+                    <p class="summary-note">
+                        <i class="fa-solid fa-circle-info"></i>
                         Đơn hàng sẽ được xử lý trong vòng 24h và chúng tôi sẽ gửi thông báo cập nhật qua email của bạn.
                     </p>
-                    <a href="{{ route('home') }}" style="display: block; text-align: center; margin-top: 15px; color: #555; text-decoration: none;">
+                    <a href="{{ route('home') }}" class="continue-shopping">
                         <i class="fa-solid fa-arrow-left"></i> Tiếp tục mua sắm
                     </a>
                 </div>
@@ -373,9 +404,45 @@
         </div>
     </div>
 
+    {{-- Success Modal --}}
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon" style="color: #2b6d2c;">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="modal-title">Thành công!</div>
+            <div class="modal-text">Đặt hàng thành công! Đơn hàng đang được xử lý.</div>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-confirm" onclick="window.location.href='{{ route('home') }}'">Về trang chủ</button>
+            </div>
+        </div>
+    </div>
+
+    {{-- Delete Confirm Modal --}}
+    <div id="deleteConfirmModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon" style="color: #e74c3c;">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <div class="modal-title">Xác nhận xóa</div>
+            <div class="modal-text">Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?</div>
+            <div class="modal-buttons">
+                <button class="btn-modal btn-cancel" onclick="closeModal('deleteConfirmModal')">Hủy</button>
+                <a id="btnConfirmDelete" href="#" class="btn-modal btn-confirm" style="background-color: #e74c3c; text-decoration: none; display: inline-block;">Xóa ngay</a>
+            </div>
+        </div>
+    </div>
+
     <script>
         function showConfirmModal() {
             document.getElementById('confirmModal').style.display = 'flex';
+        }
+
+        let deleteUrl = '';
+        function showDeleteModal(url) {
+            deleteUrl = url;
+            document.getElementById('btnConfirmDelete').href = url;
+            document.getElementById('deleteConfirmModal').style.display = 'flex';
         }
 
         function closeModal(modalId) {
