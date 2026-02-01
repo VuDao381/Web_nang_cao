@@ -22,7 +22,20 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
             ->orWhere('author', 'like', "%{$keyword}%");
     })->latest()->paginate(20);
 
-    return view('user.welcome', compact('books'));
+    // Lấy sách bán chạy (tính tổng quantity trong order_items)
+    $bestsellers = \App\Models\Books::withSum('orderItems', 'quantity')
+        ->orderByDesc('order_items_sum_quantity')
+        ->take(5)
+        ->get();
+
+    // Nếu dữ liệu order ít, có thể lấy tạm sách mới nhất để không bị trống
+    if ($bestsellers->isEmpty() || $bestsellers->sum('order_items_sum_quantity') == 0) {
+        $bestsellers = \App\Models\Books::inRandomOrder()->take(5)->get();
+    }
+
+    $categories = \App\Models\Category::all();
+
+    return view('user.welcome', compact('books', 'categories', 'bestsellers'));
 })->name('home');
 
 // Trang chi tiết sách

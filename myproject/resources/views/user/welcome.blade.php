@@ -121,10 +121,10 @@
             font-size: 15px;
         }
 
-        /* Sticky Sidebar */
+        /* Sticky Sidebar removed */
         .sidebar-left {
-            position: sticky;
-            top: 20px;
+            /* position: sticky; */
+            /* top: 20px; */
         }
     </style>
 @endsection
@@ -135,25 +135,54 @@
     <div class="main-container">
         <!-- Sidebar -->
         <aside class="sidebar-left">
-            <div class="sidebar-title">Sách Mới Bán Chạy</div>
+            <div class="sidebar-title"
+                style="font-weight: bold; font-size: 18px; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
+                Danh mục sách
+            </div>
 
-            @foreach($books->take(5) as $book)
-                <div class="bestseller-item">
-                    <a href="{{ route('book.detail', ['slug' => Str::slug($book->title)]) }}">
-                        <img src="{{ $book->image ?: 'https://via.placeholder.com/60x80' }}" alt="{{ $book->title }}">
-                    </a>
-                    <div class="bestseller-info">
-                        <h4><a href="{{ route('book.detail', ['slug' => Str::slug($book->title)]) }}"
-                                style="text-decoration: none; color: inherit;">{{ $book->title }}</a></h4>
-                        <div class="bestseller-price">{{ number_format($book->price, 0, ',', '.') }}đ</div>
-                    </div>
+            <ul class="category-list" style="list-style: none; padding: 0;">
+                @foreach($categories as $category)
+                    <li style="border-bottom: 1px solid #f5f5f5;">
+                        <a href="#"
+                            style="display: block; padding: 12px 0; color: #333; text-decoration: none; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                            {{ $category->name }}
+                            <i class="fa-solid fa-chevron-right" style="font-size: 10px; color: #ccc;"></i>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+
+            <!-- Bestseller Section (Restored) -->
+            <div style="margin-top: 40px;">
+                <div class="sidebar-title"
+                    style="font-weight: bold; font-size: 18px; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
+                    Sách Mới Bán Chạy
                 </div>
-            @endforeach
 
+                @foreach($bestsellers as $book)
+                    <div class="bestseller-item">
+                        <a href="{{ route('book.detail', ['slug' => Str::slug($book->title)]) }}">
+                            <img src="{{ $book->image ?: 'https://via.placeholder.com/60x80' }}" alt="{{ $book->title }}">
+                        </a>
+                        <div class="bestseller-info">
+                            <h4><a href="{{ route('book.detail', ['slug' => Str::slug($book->title)]) }}"
+                                    style="text-decoration: none; color: inherit;">{{ $book->title }}</a></h4>
+                            <div class="bestseller-price">{{ number_format($book->price, 0, ',', '.') }}đ</div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </aside>
 
         <!-- Book List -->
         <main class="content-right">
+
+
+            <h2
+                style="font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #333; border-left: 4px solid #2e7d32; padding-left: 10px;">
+                Sách Mới Phát Hành
+            </h2>
+
             <div class="books-grid">
                 @foreach($books as $book)
                     <div class="book-card">
