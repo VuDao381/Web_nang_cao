@@ -180,4 +180,24 @@ class BooksController extends Controller
         // 3. Trả về view
         return view('user.books_by_publisher', compact('publisher', 'books'));
     }
+    /**
+     * Hiển thị chi tiết sách theo slug (User)
+     */
+    public function showBySlug($slug)
+    {
+        // Lấy tất cả sách kèm quan hệ
+        $books = Books::with(['category', 'publisher'])->get();
+
+        // Tìm sách có slug title khớp
+        $book = $books->first(function ($item) use ($slug) {
+            return Str::slug($item->title) === $slug;
+        });
+
+        if (!$book) {
+            abort(404);
+        }
+
+        return view('user.detail', compact('book'));
+    }
 }
+
