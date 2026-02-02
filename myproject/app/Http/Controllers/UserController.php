@@ -57,7 +57,7 @@ class UserController extends Controller
         ]);
 
         return redirect()
-            ->route('users.index')
+            ->route('admin.users.index')
             ->with('success', 'Thêm người dùng thành công');
     }
 
@@ -101,7 +101,7 @@ class UserController extends Controller
         $user->update($data);
 
         return redirect()
-            ->route('users.index')
+            ->route('admin.users.index')
             ->with('success', 'Cập nhật người dùng thành công');
     }
 
@@ -113,7 +113,7 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()
-            ->route('users.index')
+            ->route('admin.users.index')
             ->with('success', 'Xóa người dùng thành công');
     }
 

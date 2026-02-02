@@ -32,11 +32,11 @@
                             <td>{{ $publisher->email ?? '-' }}</td>
                             <td>
                                 <div class="category-actions">
-                                    <a href="{{ route('publishers.edit', $publisher->id) }}" class="category-edit">
+                                    <a href="{{ route('admin.publishers.edit', $publisher->id) }}" class="category-edit">
                                         Sửa
                                     </a>
 
-                                    <form action="{{ route('publishers.destroy', $publisher->id) }}" method="POST"
+                                    <form action="{{ route('admin.publishers.destroy', $publisher->id) }}" method="POST"
                                         onsubmit="return confirm('Bạn có chắc chắn muốn xóa?')">
                                         @csrf
                                         @method('DELETE')

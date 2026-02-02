@@ -18,6 +18,7 @@ class Books extends Model
         'image',
         'category_id',
         'publisher_id',
+        'slug',
     ];
     public function category()
     {

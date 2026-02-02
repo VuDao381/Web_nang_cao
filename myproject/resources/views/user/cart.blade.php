@@ -428,7 +428,12 @@
             <div class="modal-text">Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?</div>
             <div class="modal-buttons">
                 <button class="btn-modal btn-cancel" onclick="closeModal('deleteConfirmModal')">Hủy</button>
-                <a id="btnConfirmDelete" href="#" class="btn-modal btn-confirm" style="background-color: #e74c3c; text-decoration: none; display: inline-block;">Xóa ngay</a>
+                
+                <form id="delete-form" method="POST" style="display: inline-block;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-modal btn-confirm" style="background-color: #e74c3c;">Xóa ngay</button>
+                </form>
             </div>
         </div>
     </div>
@@ -438,10 +443,8 @@
             document.getElementById('confirmModal').style.display = 'flex';
         }
 
-        let deleteUrl = '';
         function showDeleteModal(url) {
-            deleteUrl = url;
-            document.getElementById('btnConfirmDelete').href = url;
+            document.getElementById('delete-form').action = url;
             document.getElementById('deleteConfirmModal').style.display = 'flex';
         }
 

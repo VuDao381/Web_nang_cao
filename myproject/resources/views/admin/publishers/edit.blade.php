@@ -6,7 +6,7 @@
     <div class="edit-book-container">
         <h2>✏️ Sửa nhà xuất bản</h2>
 
-        <form action="{{ route('publishers.update', $publisher->id) }}" method="POST" class="edit-book-form">
+        <form action="{{ route('admin.publishers.update', $publisher->id) }}" method="POST" class="edit-book-form">
             @csrf
             @method('PUT')
 
@@ -38,7 +38,7 @@
 
             <div class="form-actions">
                 <button type="submit" class="btn-save">Cập nhật</button>
-                <a href="{{ route('publishers.index') }}" class="btn-cancel">Hủy</a>
+                <a href="{{ route('admin.publishers.index') }}" class="btn-cancel">Hủy</a>
             </div>
         </form>
     </div>

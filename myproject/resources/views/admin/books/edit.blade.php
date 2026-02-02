@@ -3,10 +3,10 @@
 @section('title', 'Sửa sách')
 
 @section('admin_content')
-    <div class="form-wrapper">
+    <div class="edit-book-container">
         <h2>✏️ Sửa sách</h2>
 
-        <form action="{{ route('books.update', $books->id) }}" method="POST" class="main-form">
+        <form action="{{ route('admin.books.update', $books->id) }}" method="POST" class="edit-book-form">
             @csrf
             @method('PUT')
 
@@ -82,7 +82,7 @@
             </div>
 
             <div class="form-actions">
-                <a href="{{ route('books.index') }}" class="btn-cancel">Hủy</a>
+                <a href="{{ route('admin.books.index') }}" class="btn-cancel">Hủy</a>
                 <button type="submit" class="btn-save">Lưu</button>
             </div>
         </form>

@@ -55,11 +55,11 @@
 
                             <td>
                                 <div class="category-actions">
-                                    <a href="{{ route('categories.edit', $category->id) }}" class="category-edit">
+                                    <a href="{{ route('admin.categories.edit', $category->id) }}" class="category-edit">
                                         ✏ Sửa
                                     </a>
 
-                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
+                                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
                                         onsubmit="return confirm('Bạn có chắc chắn muốn xóa thể loại này không?')">
                                         @csrf
                                         @method('DELETE')

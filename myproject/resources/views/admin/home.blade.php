@@ -17,7 +17,7 @@
                         <div style="font-size: 13px; color: #555;">Hãy kiểm tra và xử lý sớm nhất có thể.</div>
                     </div>
                 </div>
-                <a href="{{ route('orders.index') }}"
+                <a href="{{ route('admin.orders.index') }}"
                     style="background: #2196f3; color: white; padding: 8px 15px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">
                     Xem đơn hàng <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i>
                 </a>

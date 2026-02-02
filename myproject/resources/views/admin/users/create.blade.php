@@ -17,7 +17,7 @@
             </div>
         @endif
 
-        <form action="{{ route('users.store') }}" method="POST" class="edit-book-form">
+        <form action="{{ route('admin.users.store') }}" method="POST" class="edit-book-form">
             @csrf
 
             <div class="form-group">
@@ -67,7 +67,7 @@
 
             <div class="form-actions">
                 <button class="btn-save">Lưu</button>
-                <a href="{{ route('users.index') }}" class="btn-cancel">Hủy</a>
+                <a href="{{ route('admin.users.index') }}" class="btn-cancel">Hủy</a>
             </div>
         </form>
     </div>

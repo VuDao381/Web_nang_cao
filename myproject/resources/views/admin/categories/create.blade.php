@@ -17,7 +17,7 @@
             </div>
         @endif
 
-        <form action="{{ route('categories.store') }}" method="POST" class="edit-book-form">
+        <form action="{{ route('admin.categories.store') }}" method="POST" class="edit-book-form">
             @csrf
 
             {{-- Name --}}
@@ -57,7 +57,7 @@
             {{-- Actions --}}
             <div class="form-actions">
                 <button type="submit" class="btn-save">Lưu</button>
-                <a href="{{ route('categories.index') }}" class="btn-cancel">Hủy</a>
+                <a href="{{ route('admin.categories.index') }}" class="btn-cancel">Hủy</a>
             </div>
         </form>
     </div>

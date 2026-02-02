@@ -46,11 +46,11 @@
                                 @endif
                             </td>
                             <td class="publisher-actions">
-                                <a href="{{ route('users.edit', $user->id) }}" class="publisher-edit">
+                                <a href="{{ route('admin.users.edit', $user->id) }}" class="publisher-edit">
                                     ✏️ Sửa
                                 </a>
 
-                                <form action="{{ route('users.destroy', $user->id) }}" method="POST"
+                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
                                     onsubmit="return confirm('Xóa người dùng này?')">
                                     @csrf
                                     @method('DELETE')

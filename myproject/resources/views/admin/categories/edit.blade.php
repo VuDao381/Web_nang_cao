@@ -18,7 +18,7 @@
     @endif
 
     <form
-        action="{{ route('categories.update', $category->id) }}"
+        action="{{ route('admin.categories.update', $category->id) }}"
         method="POST"
         class="edit-book-form"
     >
@@ -82,7 +82,7 @@
         {{-- Actions --}}
         <div class="form-actions">
             <button type="submit" class="btn-save">Cập nhật</button>
-            <a href="{{ route('categories.index') }}" class="btn-cancel">Hủy</a>
+            <a href="{{ route('admin.categories.index') }}" class="btn-cancel">Hủy</a>
         </div>
     </form>
 </div>

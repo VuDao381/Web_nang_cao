@@ -6,7 +6,7 @@
     <div class="edit-book-container">
         <h2>➕ Thêm nhà xuất bản</h2>
 
-        <form action="{{ route('publishers.store') }}" method="POST" class="edit-book-form">
+        <form action="{{ route('admin.publishers.store') }}" method="POST" class="edit-book-form">
             @csrf
 
             <div class="form-group">
@@ -37,7 +37,7 @@
 
             <div class="form-actions">
                 <button type="submit" class="btn-save">Lưu</button>
-                <a href="{{ route('publishers.index') }}" class="btn-cancel">Hủy</a>
+                <a href="{{ route('admin.publishers.index') }}" class="btn-cancel">Hủy</a>
             </div>
         </form>
     </div>

@@ -1,0 +1,164 @@
+/* Admin Custom Styles */
+
+/* --- Typography & Headers --- */
+.page-header-title {
+    margin-bottom: 20px;
+    color: #1a3020;
+}
+
+.section-title {
+    margin-top: 0;
+    color: #2e7d32;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* --- Cards --- */
+.admin-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+/* --- Tables --- */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table thead tr {
+    background: #f1f8f1;
+    text-align: left;
+    border-bottom: 2px solid #e0eee0;
+}
+
+.admin-table th {
+    padding: 15px;
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+.admin-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-table .empty-row {
+    padding: 30px;
+    text-align: center;
+    color: #888;
+}
+
+.admin-table footer td {
+    padding: 20px 0; 
+    text-align: right; 
+    font-weight: bold;
+}
+
+.total-price-large {
+    color: #d32f2f;
+    font-size: 18px;
+}
+
+/* --- Badges --- */
+.status-badge {
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* Use utility classes or specific modifications for colors if needed, 
+   but for now we can keep inline styles for dynamic colors or add classes like .badge-pending 
+*/
+.badge-pending { background: #ff9800; }
+.badge-confirmed { background: #2196f3; }
+.badge-shipping { background: #03a9f4; }
+.badge-completed { background: #4caf50; }
+.badge-cancelled { background: #f44336; }
+.badge-default { background: #999; }
+
+/* --- Buttons --- */
+.btn-view-detail {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    border: 1px solid #c8e6c9;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-view-detail:hover {
+    background: #c8e6c9;
+    color: #1b5e20;
+}
+
+.btn-back-list {
+    text-decoration: none; 
+    color: #666;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-back-list:hover {
+    color: #333;
+}
+
+.btn-update {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-update:hover {
+    background: #1b5e20;
+}
+
+/* --- Layouts --- */
+.header-flex {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    margin-bottom: 20px;
+}
+
+.order-detail-grid {
+    display: grid; 
+    grid-template-columns: 2fr 1fr; 
+    gap: 20px;
+}
+
+/* --- Forms --- */
+.admin-select {
+    width: 100%; 
+    padding: 10px; 
+    border-radius: 6px; 
+    border: 1px solid #ddd;
+}
+
+/* --- Alerts --- */
+.alert-success {
+    background: #e8f5e9; 
+    color: #2e7d32; 
+    padding: 15px; 
+    border-radius: 8px; 
+    margin-bottom: 20px; 
+    border: 1px solid #c8e6c9;
+}

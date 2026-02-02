@@ -7,171 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/category.css') }}">
     <link rel="stylesheet" href="{{ asset('css/publisher.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <style>
-        /* Admin specific sidebar overriding or additional styles if not in dashboard.css */
-
-        .sidebar {
-            width: 260px;
-            background: #1a3020;
-            height: 100vh;
-            position: fixed;
-            color: #dceddc;
-            transition: all 0.3s;
-            overflow-y: auto;
-            z-index: 1000;
-            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            text-align: center;
-            background: #2e7d32;
-            color: #fff;
-            font-size: 20px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .menu-label {
-            padding: 20px 25px 10px;
-            font-size: 11px;
-            text-transform: uppercase;
-            font-weight: bold;
-            color: #6a8e6a;
-            letter-spacing: 1px;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 25px;
-            color: #dceddc;
-            text-decoration: none;
-            transition: 0.3s;
-            cursor: pointer;
-            justify-content: space-between;
-        }
-
-        .menu-item:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .menu-item.active {
-            color: #fff;
-            background: #388e3c;
-            border-left: 4px solid #a5d6a7;
-        }
-
-        .menu-content {
-            display: flex;
-            align-items: center;
-        }
-
-        .menu-item i:first-child {
-            margin-right: 15px;
-            width: 20px;
-            text-align: center;
-        }
-
-        .arrow {
-            font-size: 10px;
-            transition: transform 0.3s;
-        }
-
-        /* Submenu */
-        .submenu {
-            max-height: 0;
-            overflow: hidden;
-            background: rgba(0, 0, 0, 0.2);
-            transition: max-height 0.3s ease-out;
-        }
-
-        .submenu a {
-            display: block;
-            padding: 10px 10px 10px 60px;
-            color: #b9cfb9;
-            text-decoration: none;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-
-        .submenu a:hover {
-            color: #fff;
-            padding-left: 65px;
-        }
-
-        .menu-group.open .submenu {
-            max-height: 500px;
-        }
-
-        .menu-group.open .arrow {
-            transform: rotate(90deg);
-        }
-
-        /* Main Content */
-        .main-wrapper {
-            margin-left: 260px;
-            width: calc(100% - 260px);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-color: #f4fbf4;
-        }
-
-        .topbar {
-            height: 70px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 999;
-        }
-
-        .search-area {
-            display: flex;
-            align-items: center;
-            background: #f1f8f1;
-            border-radius: 20px;
-            padding: 5px 15px;
-            width: 380px;
-            border: 1px solid #e0eee0;
-        }
-
-        .search-area input {
-            border: none;
-            background: transparent;
-            outline: none;
-            padding: 5px 10px;
-            width: 100%;
-            font-size: 14px;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .container {
-            padding: 30px;
-            flex: 1;
-        }
-
-        footer {
-            padding: 15px;
-            text-align: center;
-            background: #fff;
-            font-size: 13px;
-            color: #666;
-            border-top: 1px solid #eee;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/admin-custom.css') }}">
 @endsection
 
 @section('content')
@@ -182,7 +18,7 @@
 
         <nav class="sidebar-menu">
             <div class="menu-label">Navigation</div>
-            <a href="{{ route('dashboard') }}" class="menu-item {{ Request::is('dashboard') ? 'active' : '' }}">
+            <a href="{{ route('admin.dashboard') }}" class="menu-item {{ Request::is('admin/dashboard') ? 'active' : '' }}">
                 <div class="menu-content">
                     <i class="fa-solid fa-gauge-high"></i>
                     <span>Dashboard</span>
@@ -201,12 +37,12 @@
                     <i class="fa-solid fa-chevron-right arrow"></i>
                 </div>
                 <div class="submenu">
-                    <a href="{{ route('books.index') }}"
-                        style="{{ Request::is('books') ? 'color:#fff; font-weight:bold;' : '' }}">
+                    <a href="{{ route('admin.books.index') }}"
+                        style="{{ Request::is('admin/books') ? 'color:#fff; font-weight:bold;' : '' }}">
                         <i class="fa-solid fa-list-ul" style="font-size: 11px; margin-right: 8px;"></i> Danh sách sách
                     </a>
-                    <a href="{{ route('books.create') }}"
-                        style="{{ Request::is('books/create') ? 'color:#fff; font-weight:bold;' : '' }}">
+                    <a href="{{ route('admin.books.create') }}"
+                        style="{{ Request::is('admin/books/create') ? 'color:#fff; font-weight:bold;' : '' }}">
                         <i class="fa-solid fa-plus" style="font-size: 11px; margin-right: 8px;"></i> Thêm sách mới
                     </a>
                 </div>
@@ -222,12 +58,12 @@
                     <i class="fa-solid fa-chevron-right arrow"></i>
                 </div>
                 <div class="submenu">
-                    <a href="{{ route('categories.index') }}"
-                        style="{{ Request::is('categories') ? 'color:#fff; font-weight:bold;' : '' }}">
+                    <a href="{{ route('admin.categories.index') }}"
+                        style="{{ Request::is('admin/categories') ? 'color:#fff; font-weight:bold;' : '' }}">
                         <i class="fa-solid fa-list" style="font-size: 11px; margin-right: 8px;"></i> Danh sách thể loại
                     </a>
-                    <a href="{{ route('categories.create') }}"
-                        style="{{ Request::is('categories/create') ? 'color:#fff; font-weight:bold;' : '' }}">
+                    <a href="{{ route('admin.categories.create') }}"
+                        style="{{ Request::is('admin/categories/create') ? 'color:#fff; font-weight:bold;' : '' }}">
                         <i class="fa-solid fa-plus" style="font-size: 11px; margin-right: 8px;"></i> Thêm thể loại
                     </a>
                 </div>
@@ -243,20 +79,21 @@
                     <i class="fa-solid fa-chevron-right arrow"></i>
                 </div>
                 <div class="submenu">
-                    <a href="{{ route('publishers.index') }}"
-                        style="{{ Request::is('publishers') ? 'color:#fff; font-weight:bold;' : '' }}">
+                    <a href="{{ route('admin.publishers.index') }}"
+                        style="{{ Request::is('admin/publishers') ? 'color:#fff; font-weight:bold;' : '' }}">
                         <i class="fa-solid fa-list-check" style="font-size: 11px; margin-right: 8px;"></i> Danh sách NXB
                     </a>
-                    <a href="{{ route('publishers.create') }}"
-                        style="{{ Request::is('publishers/create') ? 'color:#fff; font-weight:bold;' : '' }}">
+                    <a href="{{ route('admin.publishers.create') }}"
+                        style="{{ Request::is('admin/publishers/create') ? 'color:#fff; font-weight:bold;' : '' }}">
                         <i class="fa-solid fa-plus" style="font-size: 11px; margin-right: 8px;"></i> Thêm NXB
                     </a>
                 </div>
             </div>
 
             {{-- KHỐI 5: QUẢN LÝ ĐƠN HÀNG --}}
-            <div class="menu-group {{ Request::is('orders*') ? 'open' : '' }}">
-                <a href="{{ route('orders.index') }}" class="menu-item {{ Request::is('orders*') ? 'active' : '' }}">
+            <div class="menu-group {{ Request::is('admin/orders*') ? 'open' : '' }}">
+                <a href="{{ route('admin.orders.index') }}"
+                    class="menu-item {{ Request::is('admin/orders*') ? 'active' : '' }}">
                     <div class="menu-content">
                         <i class="fa-solid fa-cart-shopping"></i>
                         <span>Quản lý đơn hàng</span>
@@ -274,12 +111,12 @@
                     <i class="fa-solid fa-chevron-right arrow"></i>
                 </div>
                 <div class="submenu">
-                    <a href="{{ route('users.index') }}"
-                        style="{{ Request::is('users') ? 'color:#fff; font-weight:bold;' : '' }}">
+                    <a href="{{ route('admin.users.index') }}"
+                        style="{{ Request::is('admin/users') ? 'color:#fff; font-weight:bold;' : '' }}">
                         <i class="fa-solid fa-list" style="font-size: 11px; margin-right: 8px;"></i> Danh sách User
                     </a>
-                    <a href="{{ route('users.create') }}"
-                        style="{{ Request::is('users/create') ? 'color:#fff; font-weight:bold;' : '' }}">
+                    <a href="{{ route('admin.users.create') }}"
+                        style="{{ Request::is('admin/users/create') ? 'color:#fff; font-weight:bold;' : '' }}">
                         <i class="fa-solid fa-user-plus" style="font-size: 11px; margin-right: 8px;"></i> Thêm User mới
                     </a>
                 </div>
@@ -316,7 +153,7 @@
     <main class="main-wrapper">
         <header class="topbar">
             <div class="search-area">
-                <form action="{{ route('books.index') }}" method="GET"
+                <form action="{{ route('admin.books.index') }}" method="GET"
                     style="display: flex; width: 100%; align-items:center;">
                     <button type="submit" style="border:none; background:none; cursor:pointer; padding: 0 5px;">
                         <i class="fa-solid fa-magnifying-glass" style="color:#2e7d32"></i>
@@ -407,8 +244,8 @@
 
                 <style>
                     /* .notification-wrapper:hover .notification-dropdown {
-                                display: block;
-                            } REMOVED HOVER */
+                                    display: block;
+                                } REMOVED HOVER */
                     .notification-dropdown {
                         display: none;
                         position: absolute;

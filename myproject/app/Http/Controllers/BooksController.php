@@ -65,7 +65,7 @@ class BooksController extends Controller
             'publisher_id' => 'required|exists:publishers,id',
         ]);
 
-        Books::create($request->only([
+        $data = $request->only([
             'title',
             'author',
             'price',
@@ -76,9 +76,11 @@ class BooksController extends Controller
             'image',
             'category_id',
             'publisher_id',
-        ]));
+        ]);
+        $data['slug'] = Str::slug($request->title);
+        Books::create($data);
 
-        return redirect()->route('books.index');
+        return redirect()->route('admin.books.index');
     }
 
     /**
@@ -113,7 +115,7 @@ class BooksController extends Controller
 
         $books = Books::findOrFail($id);
 
-        $books->update($request->only([
+        $data = $request->only([
             'title',
             'author',
             'price',
@@ -124,9 +126,11 @@ class BooksController extends Controller
             'image',
             'category_id',
             'publisher_id',
-        ]));
+        ]);
+        $data['slug'] = Str::slug($request->title);
+        $books->update($data);
 
-        return redirect()->route('books.index');
+        return redirect()->route('admin.books.index');
     }
 
     /**
@@ -137,7 +141,7 @@ class BooksController extends Controller
         $books = Books::findOrFail($id);
         $books->delete();
 
-        return redirect()->route('books.index');
+        return redirect()->route('admin.books.index');
     }
 
     /**
@@ -162,15 +166,8 @@ class BooksController extends Controller
      */
     public function booksByPublisher($slug)
     {
-        // 1. Tìm NXB theo slug (tự tạo slug từ name để so sánh)
-        $publishers = Publisher::all();
-        $publisher = $publishers->first(function ($item) use ($slug) {
-            return Str::slug($item->name) === $slug;
-        });
-
-        if (!$publisher) {
-            abort(404);
-        }
+        // 1. Tìm NXB theo slug
+        $publisher = Publisher::where('slug', $slug)->firstOrFail();
 
         // 2. Lấy sách
         $books = Books::where('publisher_id', $publisher->id)
@@ -185,17 +182,8 @@ class BooksController extends Controller
      */
     public function showBySlug($slug)
     {
-        // Lấy tất cả sách kèm quan hệ
-        $books = Books::with(['category', 'publisher'])->get();
-
-        // Tìm sách có slug title khớp
-        $book = $books->first(function ($item) use ($slug) {
-            return Str::slug($item->title) === $slug;
-        });
-
-        if (!$book) {
-            abort(404);
-        }
+        // Tìm sách có slug khớp
+        $book = Books::where('slug', $slug)->with(['category', 'publisher'])->firstOrFail();
 
         return view('user.detail', compact('book'));
     }

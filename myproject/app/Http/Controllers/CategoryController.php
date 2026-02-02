@@ -61,7 +61,7 @@ class CategoryController extends Controller
             ]);
 
             return redirect()
-                ->route('categories.index')
+                ->route('admin.categories.index')
                 ->with('success', 'Thêm thể loại mới thành công!');
 
         } catch (\Exception $e) {
@@ -110,7 +110,7 @@ class CategoryController extends Controller
             ]);
 
             return redirect()
-                ->route('categories.index')
+                ->route('admin.categories.index')
                 ->with('success', 'Cập nhật thể loại thành công!');
 
         } catch (\Exception $e) {
@@ -127,7 +127,7 @@ class CategoryController extends Controller
         try {
             $category->delete();
             return redirect()
-                ->route('categories.index')
+                ->route('admin.categories.index')
                 ->with('success', 'Đã xóa thể loại thành công!');
 
         } catch (\Exception $e) {

@@ -6,7 +6,7 @@
         @if (Route::has('login'))
             @auth
                 @if(Auth::user()->role === 'admin')
-                    <a href="{{ route('dashboard') }}">Quản trị</a>
+                    <a href="{{ route('admin.dashboard') }}">Quản trị</a>
                 @endif
                 <a href="{{ route('profile.edit') }}"
                     style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
@@ -201,9 +201,12 @@
         <div class="dropdown-content">
             @if(isset($publishers) && count($publishers) > 0)
                 @foreach($publishers as $pub)
-                    <a href="{{ route('publisher.books', ['slug' => \Illuminate\Support\Str::slug($pub->name)]) }}">
-                        {{ $pub->name }}
-                    </a>
+                    @php 
+                        $slug = $pub->slug ?? \Illuminate\Support\Str::slug($pub->name);
+                    @endphp
+                    <a href="{{ route('publisher.books', ['slug' => $slug]) }}">
+                            {{ $pub->name }}
+                            </a>
                 @endforeach
             @endif
         </div>

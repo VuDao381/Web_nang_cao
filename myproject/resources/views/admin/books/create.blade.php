@@ -6,7 +6,7 @@
     <div class="edit-book-container">
         <h2>Thêm sách mới</h2>
 
-        <form action="{{ route('books.store') }}" method="POST" class="edit-book-form">
+        <form action="{{ route('admin.books.store') }}" method="POST" class="edit-book-form">
             @csrf
 
             <div class="form-group">
@@ -31,9 +31,16 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Năm phát hành</label>
-                <input type="number" name="published_year" min="1000" max="{{ date('Y') }}">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Năm phát hành</label>
+                    <input type="number" name="published_year" min="1000" max="{{ date('Y') }}">
+                </div>
+
+                <div class="form-group">
+                    <label>Số trang</label>
+                    <input type="number" name="pages" min="1">
+                </div>
             </div>
 
             <div class="form-group">
@@ -67,7 +74,7 @@
             </div>
 
             <div class="form-actions">
-                <a href="{{ route('books.index') }}" class="btn-cancel">Hủy</a>
+                <a href="{{ route('admin.books.index') }}" class="btn-cancel">Hủy</a>
                 <button type="submit" class="btn-save">Thêm sách</button>
             </div>
         </form>

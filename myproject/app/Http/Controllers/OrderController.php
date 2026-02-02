@@ -62,6 +62,6 @@ class OrderController extends Controller
             ]);
         }
 
-        return redirect()->route('orders.show', $id)->with('success', 'Cập nhật trạng thái đơn hàng thành công!');
+        return redirect()->route('admin.orders.show', $id)->with('success', 'Cập nhật trạng thái đơn hàng thành công!');
     }
 }

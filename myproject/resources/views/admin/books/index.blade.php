@@ -43,11 +43,11 @@
                         </p>
 
                         <div class="actions">
-                            <a href="{{ route('books.edit', $book->id) }}" class="btn-edit">
+                            <a href="{{ route('admin.books.edit', $book->id) }}" class="btn-edit">
                                 Sửa
                             </a>
 
-                            <form action="{{ route('books.destroy', $book->id) }}" method="POST"
+                            <form action="{{ route('admin.books.destroy', $book->id) }}" method="POST"
                                 onsubmit="return confirm('Bạn có chắc chắn muốn xóa sách này không?')">
                                 @csrf
                                 @method('DELETE')

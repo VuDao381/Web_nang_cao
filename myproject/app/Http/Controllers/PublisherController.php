@@ -48,7 +48,7 @@ class PublisherController extends Controller
             Publisher::create($request->all());
 
             return redirect()
-                ->route('publishers.index')
+                ->route('admin.publishers.index')
                 ->with('success', 'Thêm nhà xuất bản thành công!');
         } catch (\Exception $e) {
             Log::error("Lỗi thêm NXB: " . $e->getMessage());
@@ -87,7 +87,7 @@ class PublisherController extends Controller
             $publisher->update($request->all());
 
             return redirect()
-                ->route('publishers.index')
+                ->route('admin.publishers.index')
                 ->with('success', 'Cập nhật nhà xuất bản thành công!');
         } catch (\Exception $e) {
             Log::error("Lỗi cập nhật NXB: " . $e->getMessage());
@@ -108,7 +108,7 @@ class PublisherController extends Controller
 
             $publisher->delete();
             return redirect()
-                ->route('publishers.index')
+                ->route('admin.publishers.index')
                 ->with('success', 'Xóa nhà xuất bản thành công!');
         } catch (\Exception $e) {
             return back()->with('error', 'Lỗi khi xóa dữ liệu.');
