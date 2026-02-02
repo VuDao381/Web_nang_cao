@@ -34,7 +34,8 @@ class AppServiceProvider extends ServiceProvider
 
         // Share categories with header
         \Illuminate\Support\Facades\View::composer('partials.header', function ($view) {
-            $view->with('categories', \App\Models\Category::all());
+            $view->with('categories', \App\Models\Category::all())
+                ->with('publishers', \App\Models\Publisher::all());
         });
     }
 }

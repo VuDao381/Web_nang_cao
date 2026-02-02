@@ -155,4 +155,28 @@ class BooksController extends Controller
         // 3. Trả về view
         return view('user.books_by_category', compact('category', 'books'));
     }
+
+    /**
+     * Hiển thị sách theo nhà xuất bản (User)
+     */
+    public function booksByPublisher($slug)
+    {
+        // 1. Tìm NXB theo slug (tự tạo slug từ name để so sánh)
+        $publishers = \App\Models\Publisher::all();
+        $publisher = $publishers->first(function ($item) use ($slug) {
+            return \Illuminate\Support\Str::slug($item->name) === $slug;
+        });
+
+        if (!$publisher) {
+            abort(404);
+        }
+
+        // 2. Lấy sách
+        $books = Books::where('publisher_id', $publisher->id)
+            ->latest()
+            ->paginate(15);
+
+        // 3. Trả về view
+        return view('user.books_by_publisher', compact('publisher', 'books'));
+    }
 }

@@ -195,7 +195,19 @@
             @endif
         </div>
     </div>
-    <a href="#">NHÀ XUẤT BẢN</a>
+    <div class="dropdown-menu-container" style="position: relative; display: inline-block;">
+        <a href="#" style="cursor: pointer;">NHÀ XUẤT BẢN <i class="fa-solid fa-chevron-down"
+                style="font-size: 12px;"></i></a>
+        <div class="dropdown-content">
+            @if(isset($publishers) && count($publishers) > 0)
+                @foreach($publishers as $pub)
+                    <a href="{{ route('publisher.books', ['slug' => \Illuminate\Support\Str::slug($pub->name)]) }}">
+                        {{ $pub->name }}
+                    </a>
+                @endforeach
+            @endif
+        </div>
+    </div>
     <a href="#">KHUYẾN MÃI</a>
     <a href="#">TIN TỨC</a>
 </div>
