@@ -6,6 +6,14 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Models\Books;
+use App\Models\Category;
+use Illuminate\Support\Str;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,26 +22,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Trang chủ
-Route::get('/', function (\Illuminate\Http\Request $request) {
+Route::get('/', function (Request $request) {
     $keyword = $request->input('keyword');
 
-    $books = \App\Models\Books::when($keyword, function ($query, $keyword) {
+    $books = Books::when($keyword, function ($query, $keyword) {
         return $query->where('title', 'like', "%{$keyword}%")
             ->orWhere('author', 'like', "%{$keyword}%");
     })->latest()->paginate(20);
 
     // Lấy sách bán chạy (tính tổng quantity trong order_items)
-    $bestsellers = \App\Models\Books::withSum('orderItems', 'quantity')
+    $bestsellers = Books::withSum('orderItems', 'quantity')
         ->orderByDesc('order_items_sum_quantity')
         ->take(5)
         ->get();
 
     // Nếu dữ liệu order ít, có thể lấy tạm sách mới nhất để không bị trống
     if ($bestsellers->isEmpty() || $bestsellers->sum('order_items_sum_quantity') == 0) {
-        $bestsellers = \App\Models\Books::inRandomOrder()->take(5)->get();
+        $bestsellers = Books::inRandomOrder()->take(5)->get();
     }
 
-    $categories = \App\Models\Category::all();
+    $categories = Category::all();
 
     return view('user.welcome', compact('books', 'categories', 'bestsellers'));
 })->name('home');
@@ -42,10 +50,10 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
 Route::get('/book/{slug}', function ($slug) {
     // Tìm trong toàn bộ sách xem cuốn nào có slug (tạo từ title) trùng khớp
     // Lưu ý: Cách này tiện lợi cho BTL nhưng không tối ưu nếu dữ liệu quá lớn (nên thêm cột slug vào DB)
-    $books = \App\Models\Books::with(['category', 'publisher'])->get();
+    $books = Books::with(['category', 'publisher'])->get();
 
     $book = $books->first(function ($item) use ($slug) {
-        return \Illuminate\Support\Str::slug($item->title) === $slug;
+        return Str::slug($item->title) === $slug;
     });
 
     if (!$book) {
@@ -65,7 +73,7 @@ Route::get('/publisher/{slug}', [BooksController::class, 'booksByPublisher'])->n
 Route::middleware(['auth', 'admin'])->group(function () {
 
     // Dashboard
-    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
 
@@ -82,7 +90,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('users', UserController::class);
 
     // Quản lý Đơn hàng
-    Route::resource('orders', \App\Http\Controllers\OrderController::class)->only(['index', 'show', 'update']);
+    Route::resource('orders', OrderController::class)->only(['index', 'show', 'update']);
 });
 
 // --- USER ROUTES (Yêu cầu đăng nhập) ---
@@ -93,14 +101,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // --- CART ROUTES ---
-    Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/add', [\App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add');
-    Route::post('/cart/update', [\App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
-    Route::get('/cart/remove/{id}', [\App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
-    Route::post('/checkout', [\App\Http\Controllers\CartController::class, 'checkout'])->name('checkout');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+    Route::get('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 
     // Notifications
-    Route::post('/notifications/mark-read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.markRead');
+    Route::post('/notifications/mark-read', [NotificationController::class, 'markAsRead'])->name('notifications.markRead');
 });
 
 // Các file Route tách rời (Đảm bảo các file này tồn tại trong thư mục routes/)

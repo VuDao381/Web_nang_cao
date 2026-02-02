@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Models\Books;
 use App\Models\Category;
 use App\Models\Publisher;
@@ -162,9 +163,9 @@ class BooksController extends Controller
     public function booksByPublisher($slug)
     {
         // 1. Tìm NXB theo slug (tự tạo slug từ name để so sánh)
-        $publishers = \App\Models\Publisher::all();
+        $publishers = Publisher::all();
         $publisher = $publishers->first(function ($item) use ($slug) {
-            return \Illuminate\Support\Str::slug($item->name) === $slug;
+            return Str::slug($item->name) === $slug;
         });
 
         if (!$publisher) {

@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
+use App\Models\Category;
+use App\Models\Publisher;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,9 +36,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Share categories with header
-        \Illuminate\Support\Facades\View::composer('partials.header', function ($view) {
-            $view->with('categories', \App\Models\Category::all())
-                ->with('publishers', \App\Models\Publisher::all());
+        View::composer('partials.header', function ($view) {
+            $view->with('categories', Category::all())
+                ->with('publishers', Publisher::all());
         });
     }
 }

@@ -125,11 +125,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         try {
-            // Kiểm tra nếu thể loại đang có sách thì không cho xóa (Tùy chọn)
-            // if ($category->books()->count() > 0) {
-            //     return back()->with('error', 'Không thể xóa thể loại đang chứa sách!');
-            // }
-
             $category->delete();
             return redirect()
                 ->route('categories.index')

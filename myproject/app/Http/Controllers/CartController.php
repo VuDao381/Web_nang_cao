@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Models\SystemNotification;
+use App\Models\User;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Books;
+use App\Models\Order;
+use App\Models\OrderItem;
 
 class CartController extends Controller
 {
@@ -158,10 +165,10 @@ class CartController extends Controller
 
         // Start Transaction
         try {
-            \Illuminate\Support\Facades\DB::beginTransaction();
+            DB::beginTransaction();
 
             // 1. Tạo đơn hàng
-            $order = \App\Models\Order::create([
+            $order = Order::create([
                 'user_id' => $user->id,
                 'total_price' => $totalPrice,
                 'status' => 'pending', // Chờ xử lý
@@ -171,7 +178,7 @@ class CartController extends Controller
 
             // 2. Chuyển items từ Cart sang OrderItem
             foreach ($cart->items as $item) {
-                \App\Models\OrderItem::create([
+                OrderItem::create([
                     'order_id' => $order->id,
                     'book_id' => $item->book_id,
                     'quantity' => $item->quantity,
@@ -185,16 +192,16 @@ class CartController extends Controller
             // 3. Xóa giỏ hàng
             $cart->items()->delete();
 
-            \Illuminate\Support\Facades\DB::commit();
+            DB::commit();
 
             // --- Gửi thông báo cho Admin (Moved out of transaction or try-catch for safety) ---
             // --- Gửi thông báo cho Admin (Moved out of transaction or try-catch for safety) ---
             try {
                 // Check if table exists to avoid crash
-                if (\Illuminate\Support\Facades\Schema::hasTable('system_notifications')) {
-                    $admins = \App\Models\User::where('role', 'admin')->get();
+                if (Schema::hasTable('system_notifications')) {
+                    $admins = User::where('role', 'admin')->get();
                     foreach ($admins as $admin) {
-                        \App\Models\SystemNotification::create([
+                        SystemNotification::create([
                             'user_id' => $admin->id,
                             'title' => 'Có đơn hàng mới #' . $order->id,
                             'message' => 'Người dùng ' . $user->name . ' vừa đặt đơn hàng trị giá ' . number_format($totalPrice) . 'đ',
@@ -204,7 +211,7 @@ class CartController extends Controller
                 }
             } catch (\Throwable $e) {
                 // Log error but ABSOLUTELY DO NOT FAIL the order
-                \Illuminate\Support\Facades\Log::error('Notification Error (Ignored): ' . $e->getMessage());
+                Log::error('Notification Error (Ignored): ' . $e->getMessage());
             }
 
             if ($request->ajax() || $request->wantsJson()) {
@@ -217,7 +224,7 @@ class CartController extends Controller
             return redirect()->route('home')->with('success', 'Đặt hàng thành công! Đơn hàng đang được xử lý.');
 
         } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\DB::rollBack();
+            DB::rollBack();
 
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([

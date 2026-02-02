@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderStatusUpdated;
+use Illuminate\Support\Facades\Log;
+use App\Models\SystemNotification;
 
 class OrderController extends Controller
 {
@@ -43,14 +47,14 @@ class OrderController extends Controller
 
             // 1. Gửi Email (Sử dụng try-catch để tránh lỗi nếu chưa cấu hình mail)
             try {
-                \Illuminate\Support\Facades\Mail::to($order->user->email)->send(new \App\Mail\OrderStatusUpdated($order));
+                Mail::to($order->user->email)->send(new OrderStatusUpdated($order));
             } catch (\Exception $e) {
                 // Log lỗi hoặc bỏ qua nếu server chưa config mail
-                \Illuminate\Support\Facades\Log::error('Không thể gửi email: ' . $e->getMessage());
+                Log::error('Không thể gửi email: ' . $e->getMessage());
             }
 
             // 2. Tạo thông báo In-App
-            \App\Models\SystemNotification::create([
+            SystemNotification::create([
                 'user_id' => $order->user_id,
                 'title' => 'Cập nhật đơn hàng #' . $order->id,
                 'message' => 'Trạng thái đơn hàng của bạn đã chuyển sang: ' . $request->status,
