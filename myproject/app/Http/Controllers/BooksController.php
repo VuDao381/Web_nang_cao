@@ -138,4 +138,21 @@ class BooksController extends Controller
 
         return redirect()->route('books.index');
     }
+
+    /**
+     * Hiển thị sách theo thể loại (User)
+     */
+    public function booksByCategory($slug)
+    {
+        // 1. Tìm thể loại theo slug
+        $category = Category::where('slug', $slug)->firstOrFail();
+
+        // 2. Lấy sách thuộc thể loại đó, phân trang
+        $books = Books::where('category_id', $category->id)
+            ->latest()
+            ->paginate(15);
+
+        // 3. Trả về view
+        return view('user.books_by_category', compact('category', 'books'));
+    }
 }

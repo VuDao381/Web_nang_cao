@@ -143,6 +143,19 @@ class CartController extends Controller
             return redirect()->route('profile.edit')->with('error', 'Vui lòng cập nhật đầy đủ Địa chỉ và Số điện thoại trước khi đặt hàng!');
         }
 
+        // 3. Kiểm tra số lượng tồn kho trước khi xử lý
+        foreach ($cart->items as $item) {
+            if ($item->book->quantity < $item->quantity) {
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Sản phẩm "' . $item->book->title . '" chỉ còn ' . $item->book->quantity . ' cuốn, không đủ để đặt hàng!'
+                    ]);
+                }
+                return redirect()->back()->with('error', 'Sản phẩm "' . $item->book->title . '" chỉ còn ' . $item->book->quantity . ' cuốn, không đủ để đặt hàng!');
+            }
+        }
+
         // Start Transaction
         try {
             \Illuminate\Support\Facades\DB::beginTransaction();
@@ -164,6 +177,9 @@ class CartController extends Controller
                     'quantity' => $item->quantity,
                     'price' => $item->price,
                 ]);
+
+                // Trừ số lượng tồn kho
+                $item->book->decrement('quantity', $item->quantity);
             }
 
             // 3. Xóa giỏ hàng

@@ -143,7 +143,7 @@
             <ul class="category-list" style="list-style: none; padding: 0;">
                 @foreach($categories as $category)
                     <li style="border-bottom: 1px solid #f5f5f5;">
-                        <a href="#"
+                        <a href="{{ route('category.books', ['slug' => $category->slug]) }}"
                             style="display: block; padding: 12px 0; color: #333; text-decoration: none; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
                             {{ $category->name }}
                             <i class="fa-solid fa-chevron-right" style="font-size: 10px; color: #ccc;"></i>

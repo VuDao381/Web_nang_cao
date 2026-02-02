@@ -22,14 +22,19 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Auth::viaRequest('web', function ($request) {
-        $user = Auth::user();
+            $user = Auth::user();
 
-        if ($user && !$user->is_active) {
-            Auth::logout();
-            return null;
-        }
+            if ($user && !$user->is_active) {
+                Auth::logout();
+                return null;
+            }
 
-        return $user;
+            return $user;
+        });
+
+        // Share categories with header
+        \Illuminate\Support\Facades\View::composer('partials.header', function ($view) {
+            $view->with('categories', \App\Models\Category::all());
         });
     }
 }

@@ -128,6 +128,44 @@
                 border-radius: 8px;
                 z-index: 1000;
                 border: 1px solid #eee;
+                border: 1px solid #eee;
+            }
+
+            /* Dropdown Menu CSS */
+            .dropdown-menu-container:hover .dropdown-content {
+                display: block;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #fff;
+                min-width: 200px;
+                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+                z-index: 9999;
+                top: 100%;
+                left: 0;
+                border: 1px solid #eee;
+                border-radius: 4px;
+            }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                font-size: 14px;
+                text-align: left;
+                border-bottom: 1px solid #f5f5f5;
+            }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+                color: #2e7d32;
+            }
+
+            .dropdown-content a:last-child {
+                border-bottom: none;
             }
         </style>
         <a href="{{ route('cart.index') }}" class="cart-btn">
@@ -145,7 +183,18 @@
 
 <div class="main-menu">
     <a href="/">TRANG CHỦ</a>
-    <a href="#">THỂ LOẠI</a>
+
+    <div class="dropdown-menu-container" style="position: relative; display: inline-block;">
+        <a href="#" style="cursor: pointer;">THỂ LOẠI <i class="fa-solid fa-chevron-down"
+                style="font-size: 12px;"></i></a>
+        <div class="dropdown-content">
+            @if(isset($categories) && count($categories) > 0)
+                @foreach($categories as $category)
+                    <a href="{{ route('category.books', ['slug' => $category->slug]) }}">{{ $category->name }}</a>
+                @endforeach
+            @endif
+        </div>
+    </div>
     <a href="#">NHÀ XUẤT BẢN</a>
     <a href="#">KHUYẾN MÃI</a>
     <a href="#">TIN TỨC</a>

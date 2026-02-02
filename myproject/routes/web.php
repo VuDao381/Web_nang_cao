@@ -55,6 +55,9 @@ Route::get('/book/{slug}', function ($slug) {
     return view('user.detail', compact('book'));
 })->name('book.detail');
 
+// Trang danh sách sách theo thể loại
+Route::get('/category/{slug}', [BooksController::class, 'booksByCategory'])->name('category.books');
+
 // --- ADMIN ROUTES (Yêu cầu đăng nhập + Role Admin) ---
 Route::middleware(['auth', 'admin'])->group(function () {
 
