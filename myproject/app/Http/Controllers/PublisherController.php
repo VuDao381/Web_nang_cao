@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
 class PublisherController extends Controller
@@ -45,7 +46,9 @@ class PublisherController extends Controller
         );
 
         try {
-            Publisher::create($request->all());
+            $data = $request->all();
+            $data['slug'] = Str::slug($request->name);
+            Publisher::create($data);
 
             return redirect()
                 ->route('admin.publishers.index')
@@ -84,7 +87,11 @@ class PublisherController extends Controller
         );
 
         try {
-            $publisher->update($request->all());
+            $data = $request->all();
+            if ($request->has('name')) {
+                $data['slug'] = Str::slug($request->name);
+            }
+            $publisher->update($data);
 
             return redirect()
                 ->route('admin.publishers.index')

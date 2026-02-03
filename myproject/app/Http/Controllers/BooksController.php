@@ -30,6 +30,7 @@ class BooksController extends Controller
                         });
                 });
             })
+            ->latest()
             ->paginate(20)
             ->withQueryString();
 
