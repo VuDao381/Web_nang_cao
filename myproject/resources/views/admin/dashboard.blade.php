@@ -133,7 +133,6 @@
                 </div>
                 <div class="submenu">
                     <a href="{{ route('profile.edit') }}">Thông tin cá nhân</a>
-                    <a href="#">Phân quyền</a>
                 </div>
             </div>
 
@@ -244,8 +243,8 @@
 
                 <style>
                     /* .notification-wrapper:hover .notification-dropdown {
-                                    display: block;
-                                } REMOVED HOVER */
+                                        display: block;
+                                    } REMOVED HOVER */
                     .notification-dropdown {
                         display: none;
                         position: absolute;
