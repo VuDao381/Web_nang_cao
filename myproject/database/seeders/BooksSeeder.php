@@ -27,13 +27,16 @@ class BooksSeeder extends Seeder
             return;
         }
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 50; $i++) {
+            $title = $faker->sentence(5);
             DB::table('books')->insert([
-                'title' => $faker->sentence(5),
+                'title' => $title,
+                'slug' => \Illuminate\Support\Str::slug($title) . '-' . $faker->unique()->numberBetween(1, 1000), // Ensure unique slug
                 'author' => $faker->name(),
-                'price' => $faker->numberBetween(50, 500) * 1000, // giá tròn nghìn
+                'price' => $faker->numberBetween(50, 500) * 1000,
                 'quantity' => $faker->numberBetween(0, 100),
-                'published_date' => $faker->date(),
+                'published_year' => $faker->year(),
+                'pages' => $faker->numberBetween(100, 1000),
                 'description' => $faker->paragraph(),
                 'image' => 'https://via.placeholder.com/200x300.png',
                 'category_id' => $faker->randomElement($categoryIds),

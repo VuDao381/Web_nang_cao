@@ -15,9 +15,12 @@ class PublishersSeeder extends Seeder
     {
         //
         DB::table('publishers')->insert([
-            ['name' => 'NXB Trẻ'],
-            ['name' => 'NXB Kim Đồng'],
-            ['name' => 'NXB Giáo Dục'],
+            ['name' => 'NXB Trẻ', 'slug' => 'nxb-tre'],
+            ['name' => 'NXB Kim Đồng', 'slug' => 'nxb-kim-dong'],
+            ['name' => 'NXB Giáo Dục', 'slug' => 'nxb-giao-duc'],
+            ['name' => 'NXB Hội Nhà Văn', 'slug' => 'nxb-hoi-nha-van'],
+            ['name' => 'NXB Lao Động', 'slug' => 'nxb-lao-dong'],
+            ['name' => 'Nhã Nam', 'slug' => 'nha-nam'],
         ]);
     }
 }

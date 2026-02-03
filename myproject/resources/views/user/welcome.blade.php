@@ -161,11 +161,11 @@
 
                 @foreach($bestsellers as $book)
                     <div class="bestseller-item">
-                        <a href="{{ route('book.detail', ['slug' => Str::slug($book->title)]) }}">
+                        <a href="{{ route('book.detail', ['slug' => $book->slug]) }}">
                             <img src="{{ $book->image ?: 'https://via.placeholder.com/60x80' }}" alt="{{ $book->title }}">
                         </a>
                         <div class="bestseller-info">
-                            <h4><a href="{{ route('book.detail', ['slug' => Str::slug($book->title)]) }}"
+                            <h4><a href="{{ route('book.detail', ['slug' => $book->slug]) }}"
                                     style="text-decoration: none; color: inherit;">{{ $book->title }}</a></h4>
                             <div class="bestseller-price">{{ number_format($book->price, 0, ',', '.') }}đ</div>
                         </div>
@@ -186,7 +186,7 @@
             <div class="books-grid">
                 @foreach($books as $book)
                     <div class="book-card">
-                        <a href="{{ route('book.detail', ['slug' => Str::slug($book->title)]) }}"
+                        <a href="{{ route('book.detail', ['slug' => $book->slug]) }}"
                             style="text-decoration: none; color: inherit; display: block;">
                             <img src="{{ $book->image ?: 'https://via.placeholder.com/200x280' }}" alt="{{ $book->title }}">
                             <div class="book-info">

@@ -68,7 +68,7 @@
         </div>
 
         <div class="publisher-pagination">
-            {{ $users->links() }}
+            {{ $users->links('pagination::numbers-only') }}
         </div>
     </div>
 @endsection

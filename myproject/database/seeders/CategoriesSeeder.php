@@ -18,6 +18,10 @@ class CategoriesSeeder extends Seeder
             ['name' => 'Văn học', 'slug' => 'van-hoc'],
             ['name' => 'CNTT', 'slug' => 'cntt'],
             ['name' => 'Kinh tế', 'slug' => 'kinh-te'],
+            ['name' => 'Tiểu thuyết', 'slug' => 'tieu-thuyet'],
+            ['name' => 'Sách thiếu nhi', 'slug' => 'sach-thieu-nhi'],
+            ['name' => 'Tâm lý - Kỹ năng sống', 'slug' => 'tam-ly-ky-nang-song'],
+            ['name' => 'Sách giáo khoa', 'slug' => 'sach-giao-khoa'],
         ]);
     }
 }

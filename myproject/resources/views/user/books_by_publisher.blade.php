@@ -102,7 +102,7 @@
                 <div class="books-grid">
                     @foreach($books as $book)
                         <div class="book-card">
-                            <a href="{{ route('book.detail', ['slug' => Str::slug($book->title)]) }}"
+                            <a href="{{ route('book.detail', ['slug' => $book->slug]) }}"
                                 style="text-decoration: none; color: inherit; display: block;">
                                 <img src="{{ $book->image ?: 'https://via.placeholder.com/200x280' }}" alt="{{ $book->title }}">
                                 <div class="book-info">
